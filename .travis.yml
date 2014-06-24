@@ -1,3 +1,6 @@
+env:
+  global:
+    - secure: M9/ZDZMaLRBlM5uzmbQQEClBzy7aoaiSz6UVjepXsH9Q1+9bIO8WVAS8Pi2ywkSv+W7EUCkQNKx+zNt9jIkNb366dQxf8/cbhQPnJ9xpleo5CkA3Iul1aXGMusQU9IDDtaTuj0k0FUhiLxPaq/T4uogQ/QZGUypmKM8oRe13N1A=
 before_install:
   - yes | sudo add-apt-repository ppa:hansjorg/rust
   - yes | sudo add-apt-repository ppa:cmrx64/cargo
@@ -9,3 +12,5 @@ script:
   - rustc --test src/lazy_static.rs -o target/test
   - target/test
   - rustdoc src/lazy_static.rs
+after_script:
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
