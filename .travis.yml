@@ -6,6 +6,6 @@ install:
   - sudo apt-get install rust-nightly cargo
 script:
   - cargo build
-  - rustc --test src/lib.rs -o target/test
+  - rustc --test src/lazy_static.rs -o target/test
   - target/test
-  - rustdoc src/lib
+  - rustdoc src/lazy_static.rs
