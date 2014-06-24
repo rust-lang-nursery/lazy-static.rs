@@ -10,7 +10,7 @@ as well as anything that requires function calls to be computed.
 
 # Syntax
 
-```
+```rust
 lazy_static! {
     static ref NAME_1: TYPE_1 = EXPR_1;
     static ref NAME_2: TYPE_2 = EXPR_2;
