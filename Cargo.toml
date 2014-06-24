@@ -1,0 +1,9 @@
+[package]
+
+name = "lazy_static"
+version = "0.1.0"
+authors = [ "loebel.marvin@gmail.com" ]
+
+[[lib]]
+
+name = "lazy_static"
