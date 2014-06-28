@@ -9,8 +9,7 @@ install:
   - sudo apt-get install rust-nightly cargo
 script:
   - cargo build
-  - rustc --test src/lazy_static.rs -o target/test
-  - target/test
+  - cargo test
   - rustdoc src/lazy_static.rs
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
