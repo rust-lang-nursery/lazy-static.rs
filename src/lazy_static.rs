@@ -93,10 +93,10 @@ macro_rules! lazy_static {
                     fn require_share<T: Share>(_: &T) { }
 
                     unsafe {
-                        static mut s: *$T = 0 as *$T;
+                        static mut s: *const $T = 0 as *const $T;
                         static mut ONCE: Once = ONCE_INIT;
                         ONCE.doit(|| {
-                            s = transmute::<Box<$T>, *$T>(box() ($e));
+                            s = transmute::<Box<$T>, *const $T>(box() ($e));
                         });
                         let static_ref = &*s;
                         require_share(static_ref);
