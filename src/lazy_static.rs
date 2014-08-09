@@ -25,7 +25,7 @@ unique type that implements `Deref<TYPE>` and stores it in a static with name `N
 On first deref, `EXPR` gets evaluated and stored internally, such that all further derefs
 can return a reference to the same object.
 
-Like regular `static mut`s, this macro only works for types that fulfill the `Share`
+Like regular `static mut`s, this macro only works for types that fulfill the `Sync`
 trait.
 
 # Example
@@ -89,7 +89,7 @@ macro_rules! lazy_static {
                     use std::mem::transmute;
 
                     #[inline(always)]
-                    fn require_share<T: Share>(_: &T) { }
+                    fn require_sync<T: Sync>(_: &T) { }
 
                     unsafe {
                         static mut s: *const $T = 0 as *const $T;
@@ -98,7 +98,7 @@ macro_rules! lazy_static {
                             s = transmute::<Box<$T>, *const $T>(box() ($e));
                         });
                         let static_ref = &*s;
-                        require_share(static_ref);
+                        require_sync(static_ref);
                         static_ref
                     }
                 }
