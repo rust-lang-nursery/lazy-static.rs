@@ -14,10 +14,10 @@ as well as anything that requires function calls to be computed.
 
 ```rust
 lazy_static! {
-    static ref NAME_1: TYPE_1 = EXPR_1;
-    static ref NAME_2: TYPE_2 = EXPR_2;
+    [pub] static ref NAME_1: TYPE_1 = EXPR_1;
+    [pub] static ref NAME_2: TYPE_2 = EXPR_2;
     ...
-    static ref NAME_N: TYPE_N = EXPR_N;
+    [pub] static ref NAME_N: TYPE_N = EXPR_N;
 }
 ```
 

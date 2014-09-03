@@ -28,7 +28,7 @@ fn test_basic() {
     assert_eq!(*NUMBER, 6);
     assert!(HASHMAP.find(&1).is_some());
     assert!(HASHMAP.find(&3).is_none());
-    assert_eq!(ARRAY_BOXES.as_slice(), &[box 1, box 2, box 3]);
+    assert_eq!(ARRAY_BOXES.as_slice(), [box 1, box 2, box 3].as_slice());
 }
 
 #[test]
@@ -36,4 +36,15 @@ fn test_repeat() {
     assert_eq!(*NUMBER, 6);
     assert_eq!(*NUMBER, 6);
     assert_eq!(*NUMBER, 6);
+}
+
+mod visibility {
+    lazy_static! {
+        pub static ref FOO: Box<uint> = box 0u;
+    }
+}
+
+#[test]
+fn test_visibility() {
+    assert_eq!(*visibility::FOO, box 0u);
 }

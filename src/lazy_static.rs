@@ -8,12 +8,12 @@ as well as anything that requires function calls to be computed.
 
 # Syntax
 
-```rust
+```ignore
 lazy_static! {
-    static ref NAME_1: TYPE_1 = EXPR_1;
-    static ref NAME_2: TYPE_2 = EXPR_2;
+    [pub] static ref NAME_1: TYPE_1 = EXPR_1;
+    [pub] static ref NAME_2: TYPE_2 = EXPR_2;
     ...
-    static ref NAME_N: TYPE_N = EXPR_N;
+    [pub] static ref NAME_N: TYPE_N = EXPR_N;
 }
 ```
 
@@ -77,32 +77,47 @@ define uninitialized `static mut` values.
 
 #[macro_export]
 macro_rules! lazy_static {
-    ($(static ref $N:ident : $T:ty = $e:expr;)*) => {
-        $(
-            #[allow(non_camel_case_types)]
-            #[allow(dead_code)]
-            struct $N {__private_field: ()}
-            static $N: $N = $N {__private_field: ()};
-            impl Deref<$T> for $N {
-                fn deref<'a>(&'a self) -> &'a $T {
-                    use std::sync::{Once, ONCE_INIT};
-                    use std::mem::transmute;
+    (static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(PRIV static ref $N : $T = $e; $($t)*)
+    };
+    (pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(PUB static ref $N : $T = $e; $($t)*)
+    };
+    ($VIS:ident static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(MAKE TY $VIS $N)
+        impl Deref<$T> for $N {
+            fn deref<'a>(&'a self) -> &'a $T {
+                use std::sync::{Once, ONCE_INIT};
+                use std::mem::transmute;
 
-                    #[inline(always)]
-                    fn require_sync<T: Sync>(_: &T) { }
+                #[inline(always)]
+                fn require_sync<T: Sync>(_: &T) { }
 
-                    unsafe {
-                        static mut s: *const $T = 0 as *const $T;
-                        static mut ONCE: Once = ONCE_INIT;
-                        ONCE.doit(|| {
-                            s = transmute::<Box<$T>, *const $T>(box() ($e));
-                        });
-                        let static_ref = &*s;
-                        require_sync(static_ref);
-                        static_ref
-                    }
+                unsafe {
+                    static mut s: *const $T = 0 as *const $T;
+                    static mut ONCE: Once = ONCE_INIT;
+                    ONCE.doit(|| {
+                        s = transmute::<Box<$T>, *const $T>(box() ($e));
+                    });
+                    let static_ref = &*s;
+                    require_sync(static_ref);
+                    static_ref
                 }
             }
-        )*
-    }
+        }
+        lazy_static!($($t)*)
+    };
+    (MAKE TY PUB $N:ident) => {
+        #[allow(non_camel_case_types)]
+        #[allow(dead_code)]
+        pub struct $N {__private_field: ()}
+        pub static $N: $N = $N {__private_field: ()};
+    };
+    (MAKE TY PRIV $N:ident) => {
+        #[allow(non_camel_case_types)]
+        #[allow(dead_code)]
+        struct $N {__private_field: ()}
+        static $N: $N = $N {__private_field: ()};
+    };
+    () => ()
 }
