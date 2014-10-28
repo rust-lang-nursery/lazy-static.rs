@@ -1,7 +1,7 @@
 lazy-static.rs
 ==============
 
-![travis-ci status](https://travis-ci.org/Kimundi/lazy-static.rs.svg?branch=master)
+[![Travis-CI Status](https://travis-ci.org/Kimundi/lazy-static.rs.png?branch=master)](https://travis-ci.org/Kimundi/lazy-static.rs)
 
 A macro for declaring lazily evaluated statics in Rust.
 
