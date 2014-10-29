@@ -1,7 +1,7 @@
 lazy-static.rs
 ==============
 
-![travis-ci status](https://travis-ci.org/Kimundi/lazy-static.rs.svg?branch=master)
+[![Travis-CI Status](https://travis-ci.org/Kimundi/lazy-static.rs.png?branch=master)](https://travis-ci.org/Kimundi/lazy-static.rs)
 
 A macro for declaring lazily evaluated statics in Rust.
 
@@ -60,7 +60,7 @@ fn times_two(n: uint) -> uint { n * 2 }
 
 fn main() {
     println!("The map has {} entries.", *COUNT);
-    println!("The entry for `0` is \"{}\".", HASHMAP.get(&0));
+    println!("The entry for `0` is \"{}\".", HASHMAP.find(&0).unwrap());
     println!("A expensive calculation on a static results in: {}.", *NUMBER);
 }
 ```
