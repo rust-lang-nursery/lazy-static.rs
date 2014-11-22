@@ -26,8 +26,8 @@ fn times_two(n: uint) -> uint {
 fn test_basic() {
     assert_eq!(STRING.as_slice(), "hello");
     assert_eq!(*NUMBER, 6);
-    assert!(HASHMAP.find(&1).is_some());
-    assert!(HASHMAP.find(&3).is_none());
+    assert!(HASHMAP.get(&1).is_some());
+    assert!(HASHMAP.get(&3).is_none());
     assert_eq!(ARRAY_BOXES.as_slice(), [box 1, box 2, box 3].as_slice());
 }
 
