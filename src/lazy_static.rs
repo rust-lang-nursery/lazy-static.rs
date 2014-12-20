@@ -78,13 +78,13 @@ define uninitialized `static mut` values.
 #[macro_export]
 macro_rules! lazy_static {
     (static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PRIV static ref $N : $T = $e; $($t)*)
+        lazy_static!(PRIV static ref $N : $T = $e; $($t)*);
     };
     (pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PUB static ref $N : $T = $e; $($t)*)
+        lazy_static!(PUB static ref $N : $T = $e; $($t)*);
     };
     ($VIS:ident static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(MAKE TY $VIS $N)
+        lazy_static!(MAKE TY $VIS $N);
         impl Deref<$T> for $N {
             fn deref<'a>(&'a self) -> &'a $T {
                 use std::sync::{Once, ONCE_INIT};
@@ -105,7 +105,7 @@ macro_rules! lazy_static {
                 }
             }
         }
-        lazy_static!($($t)*)
+        lazy_static!($($t)*);
     };
     (MAKE TY PUB $N:ident) => {
         #[allow(non_camel_case_types)]
