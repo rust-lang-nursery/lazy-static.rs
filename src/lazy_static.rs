@@ -71,7 +71,6 @@ define uninitialized `static mut` values.
 */
 
 #![crate_type = "dylib"]
-#![license = "MIT"]
 
 #![feature(macro_rules)]
 
