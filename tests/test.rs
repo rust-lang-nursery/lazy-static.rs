@@ -6,7 +6,7 @@ use std::collections::HashMap;
 
 lazy_static! {
     static ref NUMBER: uint = times_two(3);
-    static ref ARRAY_BOXES: [Box<uint>, ..3] = [box 1, box 2, box 3];
+    static ref ARRAY_BOXES: [Box<uint>; 3] = [box 1, box 2, box 3];
     static ref STRING: String = "hello".to_string();
     static ref HASHMAP: HashMap<uint, &'static str> = {
         let mut m = HashMap::new();

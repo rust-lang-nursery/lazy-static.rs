@@ -84,7 +84,8 @@ macro_rules! lazy_static {
     };
     ($VIS:ident static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         lazy_static!(MAKE TY $VIS $N);
-        impl Deref<$T> for $N {
+        impl ::std::ops::Deref for $N {
+            type Target = $T;
             fn deref<'a>(&'a self) -> &'a $T {
                 use std::sync::{Once, ONCE_INIT};
                 use std::mem::transmute;
