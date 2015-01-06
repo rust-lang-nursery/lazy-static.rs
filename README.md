@@ -29,9 +29,26 @@ unique type that implements `Deref<TYPE>` and stores it in a static with name `N
 On first deref, `EXPR` gets evaluated and stored internally, such that all further derefs
 can return a reference to the same object.
 
-Like regular `static mut`s, this macro only works for types that fulfill the `Share`
+Like regular `static mut`s, this macro only works for types that fulfill the `Sync`
 trait.
 
+# Getting Started
+
+[lazy-static.rs is available on create.io](https://crates.io/crates/lazy_static).
+Add the following dependency to your Cargo manifest to get the latest version of the 0.1 branch:
+```
+[dependencies]
+
+lazy_static = "0.1.*"
+```
+
+To always get the latest version, add this git repository to your
+Cargo manifest:
+
+```
+[dependencies.lazy_static]
+git = "https://github.com/Kimundi/lazy-static.rs"
+```
 # Example
 
 Using the macro:
