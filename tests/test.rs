@@ -1,6 +1,4 @@
-#![feature(phase)]
-
-#[phase(plugin)]
+#[macro_use]
 extern crate lazy_static;
 use std::collections::HashMap;
 
@@ -15,6 +13,7 @@ lazy_static! {
         m.insert(2, "ghi");
         m
     };
+    // This *should* triggger warn(dead_code) by design.
     static ref UNUSED: () = ();
 }
 
