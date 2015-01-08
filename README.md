@@ -54,9 +54,7 @@ git = "https://github.com/Kimundi/lazy-static.rs"
 Using the macro:
 
 ```rust
-#![feature(phase)]
-
-#[phase(plugin)]
+#[macro_use]
 extern crate lazy_static;
 
 use std::collections::HashMap;

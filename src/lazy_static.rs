@@ -33,9 +33,7 @@ trait.
 Using the macro:
 
 ```rust
-#![feature(phase)]
-
-#[phase(plugin)]
+#[macro_use]
 extern crate lazy_static;
 
 use std::collections::HashMap;
@@ -72,8 +70,6 @@ define uninitialized `static mut` values.
 
 #![crate_type = "dylib"]
 
-#![feature(macro_rules)]
-
 #[macro_export]
 macro_rules! lazy_static {
     (static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
@@ -96,7 +92,7 @@ macro_rules! lazy_static {
                 unsafe {
                     static mut __static: *const $T = 0 as *const $T;
                     static mut __ONCE: Once = ONCE_INIT;
-                    __ONCE.doit(|| {
+                    __ONCE.call_once(|| {
                         __static = transmute::<Box<$T>, *const $T>(box() ($e));
                     });
                     let static_ref = &*__static;
