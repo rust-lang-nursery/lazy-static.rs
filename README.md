@@ -60,18 +60,18 @@ extern crate lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
-    static ref HASHMAP: HashMap<uint, &'static str> = {
+    static ref HASHMAP: HashMap<u32, &'static str> = {
         let mut m = HashMap::new();
-        m.insert(0u, "foo");
-        m.insert(1u, "bar");
-        m.insert(2u, "baz");
+        m.insert(0, "foo");
+        m.insert(1, "bar");
+        m.insert(2, "baz");
         m
     };
-    static ref COUNT: uint = HASHMAP.len();
-    static ref NUMBER: uint = times_two(21);
+    static ref COUNT: usize = HASHMAP.len();
+    static ref NUMBER: u32 = times_two(21);
 }
 
-fn times_two(n: uint) -> uint { n * 2 }
+fn times_two(n: u32) -> u32 { n * 2 }
 
 fn main() {
     println!("The map has {} entries.", *COUNT);

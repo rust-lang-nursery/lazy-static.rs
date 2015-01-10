@@ -1,14 +1,16 @@
+#![allow(unstable)]
+
 #[macro_use]
 extern crate lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
-    static ref NUMBER: uint = times_two(3);
-    static ref ARRAY_BOXES: [Box<uint>; 3] = [box 1, box 2, box 3];
+    static ref NUMBER: u32 = times_two(3);
+    static ref ARRAY_BOXES: [Box<u32>; 3] = [Box::new(1), Box::new(2), Box::new(3)];
     static ref STRING: String = "hello".to_string();
-    static ref HASHMAP: HashMap<uint, &'static str> = {
+    static ref HASHMAP: HashMap<u32, &'static str> = {
         let mut m = HashMap::new();
-        m.insert(0u, "abc");
+        m.insert(0, "abc");
         m.insert(1, "def");
         m.insert(2, "ghi");
         m
@@ -17,7 +19,7 @@ lazy_static! {
     static ref UNUSED: () = ();
 }
 
-fn times_two(n: uint) -> uint {
+fn times_two(n: u32) -> u32 {
     n * 2
 }
 
@@ -27,7 +29,7 @@ fn test_basic() {
     assert_eq!(*NUMBER, 6);
     assert!(HASHMAP.get(&1).is_some());
     assert!(HASHMAP.get(&3).is_none());
-    assert_eq!(ARRAY_BOXES.as_slice(), [box 1, box 2, box 3].as_slice());
+    assert_eq!(ARRAY_BOXES.as_slice(), [Box::new(1), Box::new(2), Box::new(3)].as_slice());
 }
 
 #[test]
@@ -39,11 +41,11 @@ fn test_repeat() {
 
 mod visibility {
     lazy_static! {
-        pub static ref FOO: Box<uint> = box 0u;
+        pub static ref FOO: Box<u32> = Box::new(0);
     }
 }
 
 #[test]
 fn test_visibility() {
-    assert_eq!(*visibility::FOO, box 0u);
+    assert_eq!(*visibility::FOO, Box::new(0));
 }
