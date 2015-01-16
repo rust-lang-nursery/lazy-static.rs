@@ -104,12 +104,14 @@ macro_rules! lazy_static {
         lazy_static!($($t)*);
     };
     (MAKE TY PUB $N:ident) => {
+        #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
         pub struct $N {__private_field: ()}
         pub static $N: $N = $N {__private_field: ()};
     };
     (MAKE TY PRIV $N:ident) => {
+        #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
         struct $N {__private_field: ()}

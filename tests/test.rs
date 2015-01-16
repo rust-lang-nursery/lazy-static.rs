@@ -49,3 +49,8 @@ mod visibility {
 fn test_visibility() {
     assert_eq!(*visibility::FOO, Box::new(0));
 }
+
+// This should not cause a warning about a missing Copy implementation
+lazy_static! {
+    pub static ref VAR: i32 = { 0 };
+}
