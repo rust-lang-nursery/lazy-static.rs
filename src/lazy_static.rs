@@ -93,7 +93,7 @@ macro_rules! lazy_static {
                     static mut __static: *const $T = 0 as *const $T;
                     static mut __ONCE: Once = ONCE_INIT;
                     __ONCE.call_once(|| {
-                        __static = transmute::<Box<$T>, *const $T>(box() ($e));
+                        __static = transmute::<Box<$T>, *const $T>(Box::new(($e)));
                     });
                     let static_ref = &*__static;
                     require_sync(static_ref);
