@@ -93,7 +93,7 @@ macro_rules! lazy_static {
                     static mut __static: *const $T = 0 as *const $T;
                     static mut __ONCE: Once = ONCE_INIT;
                     __ONCE.call_once(|| {
-                        __static = transmute::<Box<$T>, *const $T>(box() ($e));
+                        __static = transmute::<Box<$T>, *const $T>(Box::new(($e)));
                     });
                     let static_ref = &*__static;
                     require_sync(static_ref);
@@ -108,6 +108,7 @@ macro_rules! lazy_static {
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
         pub struct $N {__private_field: ()}
+        #[allow(dead_code)]
         pub static $N: $N = $N {__private_field: ()};
     };
     (MAKE TY PRIV $N:ident) => {
@@ -115,6 +116,7 @@ macro_rules! lazy_static {
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
         struct $N {__private_field: ()}
+        #[allow(dead_code)]
         static $N: $N = $N {__private_field: ()};
     };
     () => ()
