@@ -89,11 +89,14 @@ macro_rules! lazy_static {
                 #[inline(always)]
                 fn require_sync<T: Sync>(_: &T) { }
 
+                #[inline(always)]
+                fn initialize() -> Box<$T> { Box::new($e) }
+
                 unsafe {
                     static mut __static: *const $T = 0 as *const $T;
                     static mut __ONCE: Once = ONCE_INIT;
                     __ONCE.call_once(|| {
-                        __static = transmute::<Box<$T>, *const $T>(Box::new(($e)));
+                        __static = transmute::<Box<$T>, *const $T>(initialize());
                     });
                     let static_ref = &*__static;
                     require_sync(static_ref);
