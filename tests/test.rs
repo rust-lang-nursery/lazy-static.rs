@@ -19,6 +19,7 @@ lazy_static! {
     };
     // This *should* triggger warn(dead_code) by design.
     static ref UNUSED: () = ();
+
 }
 
 fn times_two(n: u32) -> u32 {
@@ -56,4 +57,31 @@ fn test_visibility() {
 // This should not cause a warning about a missing Copy implementation
 lazy_static! {
     pub static ref VAR: i32 = { 0 };
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+struct X;
+struct Once(X);
+const ONCE_INIT: Once = Once(X);
+static DATA: X = X;
+static ONCE: X = X;
+fn require_sync() -> X { X }
+fn transmute() -> X { X }
+fn __static_ref_initialize() -> X { X }
+fn test(_: Vec<X>) -> X { X }
+
+// All these names should not be shadowed
+lazy_static! {
+    static ref ITEM_NAME_TEST: X = {
+        test(vec![X, Once(X).0, ONCE_INIT.0, DATA, ONCE,
+                  require_sync(), transmute(),
+                  // Except this, which will sadly be shadowed by internals:
+                  // __static_ref_initialize()
+                  ])
+    };
+}
+
+#[test]
+fn item_name_shadowing() {
+    assert_eq!(*ITEM_NAME_TEST, X);
 }

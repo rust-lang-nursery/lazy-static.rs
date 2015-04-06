@@ -83,22 +83,22 @@ macro_rules! lazy_static {
         impl ::std::ops::Deref for $N {
             type Target = $T;
             fn deref<'a>(&'a self) -> &'a $T {
-                use std::sync::{Once, ONCE_INIT};
-                use std::mem::transmute;
-
                 #[inline(always)]
-                fn require_sync<T: Sync>(_: &T) { }
-
-                #[inline(always)]
-                fn initialize() -> Box<$T> { Box::new($e) }
+                fn __static_ref_initialize() -> Box<$T> { Box::new($e) }
 
                 unsafe {
-                    static mut __static: *const $T = 0 as *const $T;
-                    static mut __ONCE: Once = ONCE_INIT;
-                    __ONCE.call_once(|| {
-                        __static = transmute::<Box<$T>, *const $T>(initialize());
+                    use std::sync::{Once, ONCE_INIT};
+                    use std::mem::transmute;
+
+                    #[inline(always)]
+                    fn require_sync<T: Sync>(_: &T) { }
+
+                    static mut DATA: *const $T = 0 as *const $T;
+                    static mut ONCE: Once = ONCE_INIT;
+                    ONCE.call_once(|| {
+                        DATA = transmute::<Box<$T>, *const $T>(__static_ref_initialize());
                     });
-                    let static_ref = &*__static;
+                    let static_ref = &*DATA;
                     require_sync(static_ref);
                     static_ref
                 }
