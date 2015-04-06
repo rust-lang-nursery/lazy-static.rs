@@ -13,6 +13,10 @@ lazy_static! {
         m.insert(2, "ghi");
         m
     };
+    // This should not compile if the unsafe is removed.
+    static ref UNSAFE: u32 = unsafe {
+        std::mem::transmute::<i32, u32>(-1)
+    };
     // This *should* triggger warn(dead_code) by design.
     static ref UNUSED: () = ();
 }
@@ -23,11 +27,12 @@ fn times_two(n: u32) -> u32 {
 
 #[test]
 fn test_basic() {
-    assert_eq!(&STRING[..], "hello");
+    assert_eq!(&**STRING, "hello");
     assert_eq!(*NUMBER, 6);
     assert!(HASHMAP.get(&1).is_some());
     assert!(HASHMAP.get(&3).is_none());
-    assert_eq!(&ARRAY_BOXES[..], &[Box::new(1), Box::new(2), Box::new(3)][..]);
+    assert_eq!(&*ARRAY_BOXES, &[Box::new(1), Box::new(2), Box::new(3)]);
+    assert_eq!(*UNSAFE, std::u32::MAX);
 }
 
 #[test]
