@@ -3,9 +3,16 @@ extern crate lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
-    static ref NUMBER: u32 = times_two(3);
+    /// Documentation!
+    pub static ref NUMBER: u32 = times_two(3);
+
     static ref ARRAY_BOXES: [Box<u32>; 3] = [Box::new(1), Box::new(2), Box::new(3)];
-    static ref STRING: String = "hello".to_string();
+
+    /// More documentation!
+    #[allow(unused_variables)]
+    #[derive(Copy, Clone, Debug)]
+    pub static ref STRING: String = "hello".to_string();
+
     static ref HASHMAP: HashMap<u32, &'static str> = {
         let mut m = HashMap::new();
         m.insert(0, "abc");
@@ -13,10 +20,12 @@ lazy_static! {
         m.insert(2, "ghi");
         m
     };
+
     // This should not compile if the unsafe is removed.
     static ref UNSAFE: u32 = unsafe {
         std::mem::transmute::<i32, u32>(-1)
     };
+
     // This *should* triggger warn(dead_code) by design.
     static ref UNUSED: () = ();
 
@@ -41,6 +50,17 @@ fn test_repeat() {
     assert_eq!(*NUMBER, 6);
     assert_eq!(*NUMBER, 6);
     assert_eq!(*NUMBER, 6);
+}
+
+#[test]
+fn test_meta() {
+    // this would not compile if STRING were not marked #[derive(Copy, Clone)]
+    let copy_of_string = STRING;
+    // just to make sure it was copied
+    assert!(&STRING as *const _ != &copy_of_string as *const _);
+
+    // this would not compile if STRING were not marked #[derive(Debug)]
+    assert_eq!(format!("{:?}", STRING), "STRING { __private_field: () }".to_string());
 }
 
 mod visibility {

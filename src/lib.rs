@@ -17,10 +17,13 @@ lazy_static! {
 }
 ```
 
+Metadata (such as doc comments) is allowed on each ref.
+
 # Semantic
 
-For a given `static ref NAME: TYPE = EXPR;`, the macro generates a
-unique type that implements `Deref<TYPE>` and stores it in a static with name `NAME`.
+For a given `static ref NAME: TYPE = EXPR;`, the macro generates a unique type that
+implements `Deref<TYPE>` and stores it in a static with name `NAME`. (Metadata ends up
+attaching to this type.)
 
 On first deref, `EXPR` gets evaluated and stored internally, such that all further derefs
 can return a reference to the same object.
@@ -72,14 +75,14 @@ define uninitialized `static mut` values.
 
 #[macro_export]
 macro_rules! lazy_static {
-    (static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PRIV static ref $N : $T = $e; $($t)*);
+    ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
-    (pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PUB static ref $N : $T = $e; $($t)*);
+    ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
-    ($VIS:ident static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(MAKE TY $VIS $N);
+    ($VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(MAKE TY, $VIS, $(#[$attr])*, $N);
         impl ::std::ops::Deref for $N {
             type Target = $T;
             fn deref<'a>(&'a self) -> &'a $T {
@@ -106,18 +109,22 @@ macro_rules! lazy_static {
         }
         lazy_static!($($t)*);
     };
-    (MAKE TY PUB $N:ident) => {
+    (MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
+        $(#[$attr])*
         pub struct $N {__private_field: ()}
+        #[doc(hidden)]
         pub static $N: $N = $N {__private_field: ()};
     };
-    (MAKE TY PRIV $N:ident) => {
+    (MAKE TY, PRIV, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
+        $(#[$attr])*
         struct $N {__private_field: ()}
+        #[doc(hidden)]
         static $N: $N = $N {__private_field: ()};
     };
     () => ()
