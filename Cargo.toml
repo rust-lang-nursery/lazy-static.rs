@@ -10,3 +10,6 @@ documentation = "http://kimundi.github.io/lazy-static.rs/lazy_static/index.html"
 
 repository = "https://github.com/Kimundi/lazy-static.rs"
 keywords = ["macro", "lazy", "static"]
+
+[features]
+nightly = []
