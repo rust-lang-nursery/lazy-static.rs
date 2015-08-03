@@ -64,10 +64,7 @@ fn main() {
 
 # Implementation details
 
-The `Deref` implementation uses a hidden `static mut` that is guarded by a atomic check
-using the `sync::Once` abstraction. All lazily evaluated values are currently
-put in a heap allocated box, due to the Rust language currently not providing any way to
-define uninitialized `static mut` values.
+The `Deref` implementation uses a hidden static variable that is guarded by a atomic check on each access. On stable Rust, the macro may need to allocate each static on the heap.
 
 */
 
