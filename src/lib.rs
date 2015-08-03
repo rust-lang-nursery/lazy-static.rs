@@ -108,7 +108,7 @@ macro_rules! lazy_static {
                         });
                         match *DATA.0.get() {
                             Some(ref x) => x,
-                            None => loop { /* unreachable */ },
+                            None => ::std::intrinsics::unreachable(),
                         }
                     }
 
