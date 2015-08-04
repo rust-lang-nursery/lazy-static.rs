@@ -68,7 +68,7 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 
 */
 
-#![cfg_attr(feature="nightly", feature(const_fn))]
+#![cfg_attr(feature="nightly", feature(const_fn, core_intrinsics))]
 #![crate_type = "dylib"]
 
 #[macro_export]
