@@ -1,4 +1,4 @@
-#![cfg_attr(feature="nightly", feature(const_fn))]
+#![cfg_attr(feature="nightly", feature(const_fn, core_intrinsics))]
 
 #[macro_use]
 extern crate lazy_static;
