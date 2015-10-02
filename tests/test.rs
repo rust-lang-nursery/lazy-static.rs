@@ -68,6 +68,13 @@ fn test_meta() {
 mod visibility {
     lazy_static! {
         pub static ref FOO: Box<u32> = Box::new(0);
+        static ref BAR: Box<u32> = Box::new(98);
+    }
+
+    #[test]
+    fn sub_test() {
+        assert_eq!(**FOO, 0);
+        assert_eq!(**BAR, 98);
     }
 }
 
