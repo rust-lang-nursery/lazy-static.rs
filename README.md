@@ -47,7 +47,7 @@ Cargo manifest:
 
 ```toml
 [dependencies.lazy_static]
-git = "https://github.com/Kimundi/lazy-static.rs"
+git = "https://github.com/rust-lang-nursery/lazy-static.rs"
 ```
 # Example
 
