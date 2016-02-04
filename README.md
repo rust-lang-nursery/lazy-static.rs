@@ -76,6 +76,6 @@ fn times_two(n: u32) -> u32 { n * 2 }
 fn main() {
     println!("The map has {} entries.", *COUNT);
     println!("The entry for `0` is \"{}\".", HASHMAP.get(&0).unwrap());
-    println!("A expensive calculation on a static results in: {}.", *NUMBER);
+    println!("An expensive calculation on a static results in: {}.", *NUMBER);
 }
 ```
