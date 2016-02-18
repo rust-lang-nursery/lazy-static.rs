@@ -35,7 +35,8 @@ trait.
 
 Using the macro:
 
-```rust
+```
+# #![cfg_attr(feature="nightly", feature(const_fn, core_intrinsics))]
 #[macro_use]
 extern crate lazy_static;
 
@@ -71,6 +72,25 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 #![cfg_attr(feature="nightly", feature(const_fn, core_intrinsics))]
 #![crate_type = "dylib"]
 
+pub mod lazy;
+
+#[cfg(feature="nightly")]
+#[macro_export]
+macro_rules! lazy_create {
+    ($T:ty) => {
+        static LAZY: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::new();
+    }
+}
+
+#[cfg(not(feature="nightly"))]
+#[macro_export]
+macro_rules! lazy_create {
+    ($T:ty) => {
+        use std::sync::ONCE_INIT;
+        static mut LAZY: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(0 as *const $T, ONCE_INIT);
+    }
+}
+
 #[macro_export]
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
@@ -84,51 +104,15 @@ macro_rules! lazy_static {
         impl ::std::ops::Deref for $N {
             type Target = $T;
             fn deref<'a>(&'a self) -> &'a $T {
-                #[inline(always)]
-                fn __static_ref_initialize() -> $T { $e }
-
                 unsafe {
-                    use std::sync::{Once, ONCE_INIT};
-
                     #[inline(always)]
-                    fn require_sync<T: Sync>(_: &T) { }
+                    fn __static_ref_initialize() -> $T { $e }
 
-                    #[inline(always)]
-                    #[cfg(feature="nightly")]
                     unsafe fn __stability() -> &'static $T {
-                        use std::cell::UnsafeCell;
-
-                        struct SyncCell(UnsafeCell<Option<$T>>);
-                        unsafe impl Sync for SyncCell {}
-
-                        static DATA: SyncCell = SyncCell(UnsafeCell::new(None));
-                        static ONCE: Once = ONCE_INIT;
-                        ONCE.call_once(|| {
-                            *DATA.0.get() = Some(__static_ref_initialize());
-                        });
-                        match *DATA.0.get() {
-                            Some(ref x) => x,
-                            None => ::std::intrinsics::unreachable(),
-                        }
+                        lazy_create!($T);
+                        LAZY.get(__static_ref_initialize)
                     }
-
-                    #[inline(always)]
-                    #[cfg(not(feature="nightly"))]
-                    unsafe fn __stability() -> &'static $T {
-                        use std::mem::transmute;
-
-                        static mut DATA: *const $T = 0 as *const $T;
-                        static mut ONCE: Once = ONCE_INIT;
-                        ONCE.call_once(|| {
-                            DATA = transmute::<Box<$T>, *const $T>(
-                                Box::new(__static_ref_initialize()));
-                        });
-                        &*DATA
-                    }
-
-                    let static_ref = __stability();
-                    require_sync(static_ref);
-                    static_ref
+                    __stability()
                 }
             }
         }
