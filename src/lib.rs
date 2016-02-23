@@ -115,13 +115,10 @@ macro_rules! lazy_static {
                     #[inline(always)]
                     #[cfg(not(feature="nightly"))]
                     unsafe fn __stability() -> &'static $T {
-                        use std::mem::transmute;
-
                         static mut DATA: *const $T = 0 as *const $T;
                         static mut ONCE: Once = ONCE_INIT;
                         ONCE.call_once(|| {
-                            DATA = transmute::<Box<$T>, *const $T>(
-                                Box::new(__static_ref_initialize()));
+                            DATA = Box::into_raw(Box::new(__static_ref_initialize()));
                         });
                         &*DATA
                     }
