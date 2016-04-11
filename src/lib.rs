@@ -80,13 +80,13 @@ pub mod lazy;
 #[macro_export]
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+        lazy_static!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
     ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+        lazy_static!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
-    ($VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(MAKE TY, $VIS, $(#[$attr])*, $N);
+    (@$VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        lazy_static!(@MAKE TY, $VIS, $(#[$attr])*, $N);
         impl ::std::ops::Deref for $N {
             type Target = $T;
             fn deref<'a>(&'a self) -> &'a $T {
@@ -104,7 +104,7 @@ macro_rules! lazy_static {
         }
         lazy_static!($($t)*);
     };
-    (MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
+    (@MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
@@ -113,7 +113,7 @@ macro_rules! lazy_static {
         #[doc(hidden)]
         pub static $N: $N = $N {__private_field: ()};
     };
-    (MAKE TY, PRIV, $(#[$attr:meta])*, $N:ident) => {
+    (@MAKE TY, PRIV, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
         #[allow(non_camel_case_types)]
         #[allow(dead_code)]
