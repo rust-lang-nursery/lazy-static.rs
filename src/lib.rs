@@ -116,6 +116,7 @@ macro_rules! lazy_static {
                     #[cfg(not(feature="nightly"))]
                     unsafe fn __stability() -> &'static $T {
                         use std::mem::transmute;
+                        use std::boxed::Box;
 
                         static mut DATA: *const $T = 0 as *const $T;
                         static mut ONCE: Once = ONCE_INIT;
