@@ -94,6 +94,7 @@ macro_rules! lazy_static {
                     #[inline(always)]
                     fn __static_ref_initialize() -> $T { $e }
 
+                    #[inline(always)]
                     unsafe fn __stability() -> &'static $T {
                         lazy_static_create!(LAZY, $T);
                         LAZY.get(__static_ref_initialize)
