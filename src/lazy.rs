@@ -21,7 +21,7 @@ impl<T: Sync> Lazy<T> {
 unsafe impl<T: Sync> Sync for Lazy<T> {}
 
 #[macro_export]
-macro_rules! lazy_static_create {
+macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
         use std::sync::ONCE_INIT;
         static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(0 as *const $T, ONCE_INIT);

@@ -96,7 +96,7 @@ macro_rules! lazy_static {
 
                     #[inline(always)]
                     unsafe fn __stability() -> &'static $T {
-                        lazy_static_create!(LAZY, $T);
+                        __lazy_static_create!(LAZY, $T);
                         LAZY.get(__static_ref_initialize)
                     }
                     __stability()
