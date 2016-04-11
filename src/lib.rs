@@ -68,10 +68,11 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 
 */
 
-#![cfg_attr(feature="nightly", feature(const_fn, core_intrinsics))]
+#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable))]
 #![crate_type = "dylib"]
 
 #[macro_export]
+#[cfg_attr(feature="nightly", allow_internal_unstable)]
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         lazy_static!(PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
