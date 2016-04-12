@@ -68,7 +68,7 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 
 */
 
-#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable))]
+#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable, core_intrinsics))]
 
 #[cfg(not(feature="nightly"))]
 pub mod lazy;
