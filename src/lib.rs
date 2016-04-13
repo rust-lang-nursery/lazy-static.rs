@@ -90,6 +90,7 @@ macro_rules! lazy_static {
         lazy_static!(@MAKE TY, $VIS, $(#[$attr])*, $N);
         impl ::std::ops::Deref for $N {
             type Target = $T;
+            #[allow(unsafe_code)]
             fn deref<'a>(&'a self) -> &'a $T {
                 unsafe {
                     #[inline(always)]
