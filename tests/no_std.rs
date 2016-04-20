@@ -1,5 +1,5 @@
 #![cfg(feature="no_std")]
-#![feature(const_fn, core_intrinsics)]
+#![feature(const_fn)]
 
 #![no_std]
 
