@@ -1,7 +1,8 @@
-use std::sync::Once;
+extern crate std;
 
-use std::cell::UnsafeCell;
-use std::sync::ONCE_INIT;
+use self::std::prelude::v1::*;
+use self::std::cell::UnsafeCell;
+use self::std::sync::{Once, ONCE_INIT};
 
 pub struct Lazy<T: Sync>(UnsafeCell<Option<T>>, Once);
 
@@ -22,7 +23,7 @@ impl<T: Sync> Lazy<T> {
 
             match *self.0.get() {
                 Some(ref x) => x,
-                None => ::std::intrinsics::unreachable(),
+                None => std::intrinsics::unreachable(),
             }
         }
     }

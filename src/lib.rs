@@ -69,7 +69,8 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 */
 
 #![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable, core_intrinsics))]
-#![cfg_attr(feature="no_std", no_std)]
+
+#![no_std]
 
 #[cfg(not(feature="nightly"))]
 pub mod lazy;
@@ -82,6 +83,8 @@ pub mod lazy;
 #[path="core_lazy.rs"]
 pub mod lazy;
 
+pub use core::ops::Deref as __Deref;
+
 #[macro_export]
 #[cfg_attr(feature="nightly", allow_internal_unstable)]
 macro_rules! lazy_static {
@@ -93,7 +96,7 @@ macro_rules! lazy_static {
     };
     (@$VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         lazy_static!(@MAKE TY, $VIS, $(#[$attr])*, $N);
-        impl ::std::ops::Deref for $N {
+        impl $crate::__Deref for $N {
             type Target = $T;
             #[allow(unsafe_code)]
             fn deref<'a>(&'a self) -> &'a $T {
