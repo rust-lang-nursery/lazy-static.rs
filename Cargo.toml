@@ -17,4 +17,4 @@ optional = true
 
 [features]
 nightly = []
-no_std = ["nightly", "spin"]
+spin_no_std = ["nightly", "spin"]
