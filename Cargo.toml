@@ -1,6 +1,6 @@
 [package]
 name = "lazy_static"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Marvin Löbel <loebel.marvin@gmail.com>"]
 license = "MIT"
 
