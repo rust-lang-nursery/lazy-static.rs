@@ -1,4 +1,7 @@
-use std::sync::Once;
+extern crate std;
+
+use self::std::prelude::v1::*;
+use self::std::sync::Once;
 
 pub struct Lazy<T: Sync>(pub *const T, pub Once);
 
