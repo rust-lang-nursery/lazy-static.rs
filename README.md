@@ -35,20 +35,13 @@ trait.
 # Getting Started
 
 [lazy-static.rs is available on crates.io](https://crates.io/crates/lazy_static).
-Add the following dependency to your Cargo manifest to get the latest version of the 0.1 branch:
+Add the following dependency to your Cargo manifest to get the latest published version:
 
 ```toml
 [dependencies]
-lazy_static = "0.1.*"
+lazy_static = "0.2"
 ```
 
-To always get the latest version, add this git repository to your
-Cargo manifest:
-
-```toml
-[dependencies.lazy_static]
-git = "https://github.com/rust-lang-nursery/lazy-static.rs"
-```
 # Example
 
 Using the macro:
