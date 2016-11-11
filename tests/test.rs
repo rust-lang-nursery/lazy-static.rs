@@ -33,6 +33,19 @@ lazy_static! {
 
 }
 
+lazy_static! {
+    static ref S1: &'static str = "a";
+    static ref S2: &'static str = "b";
+}
+lazy_static! {
+    static ref S3: String = [*S1, *S2].join("");
+}
+
+#[test]
+fn s3() {
+    assert_eq!(&*S3, "ab");
+}
+
 fn times_two(n: u32) -> u32 {
     n * 2
 }
