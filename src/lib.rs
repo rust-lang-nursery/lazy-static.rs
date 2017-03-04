@@ -132,7 +132,7 @@ macro_rules! __lazy_static_internal {
         }
         impl $crate::LazyStatic for $N {
             fn initialize(lazy: &Self) {
-                let _ = &*lazy;
+                let _ = &**lazy;
             }
         }
         __lazy_static_internal!($($t)*);
