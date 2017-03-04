@@ -26,7 +26,8 @@ implements `Deref<TYPE>` and stores it in a static with name `NAME`. (Metadata e
 attaching to this type.)
 
 On first deref, `EXPR` gets evaluated and stored internally, such that all further derefs
-can return a reference to the same object.
+can return a reference to the same object. Note that this can lead to deadlocks
+if you have multiple lazy statics that depend on each other in their initialization.
 
 Like regular `static mut`s, this macro only works for types that fulfill the `Sync`
 trait.
