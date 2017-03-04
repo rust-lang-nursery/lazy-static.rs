@@ -130,6 +130,11 @@ macro_rules! __lazy_static_internal {
                 }
             }
         }
+        impl $crate::LazyStatic for $N {
+            fn initialize(lazy: &Self) {
+                let _ = &*lazy;
+            }
+        }
         __lazy_static_internal!($($t)*);
     };
     (@MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
@@ -165,13 +170,38 @@ macro_rules! lazy_static {
     () => ()
 }
 
-/*
-trait LazyStatic<T>: Deref<Target=T> {
-
-}
-
+/// Support trait for enabling a few common operation on lazy static values.
 ///
-pub fn initialize<T>(lazy: &lazy::Lazy<T>) {
-
+/// This is implemented by each defined lazy static, and
+/// used by the free functions in this crate.
+pub trait LazyStatic {
+    #[doc(hidden)]
+    fn initialize(lazy: &Self);
 }
-*/
+
+/// Takes a shared reference to a lazy static and initializes
+/// it if it has not been already.
+///
+/// This can be used to control the initialization point of a lazy static.
+///
+/// Example:
+///
+/// ```rust
+/// #[macro_use]
+/// extern crate lazy_static;
+///
+/// lazy_static! {
+///     static ref BUFFER: Vec<u8> = (0..65537).collect();
+/// }
+///
+/// fn main() {
+///     lazy_static::initialize(&BUFFER);
+///
+///     // ...
+///     work_with_initialized_data(&BUFFER);
+/// }
+/// # fn work_with_initialized_data(_: &[u8]) {}
+/// ```
+pub fn initialize<T: LazyStatic>(lazy: &T) {
+    LazyStatic::initialize(lazy);
+}
