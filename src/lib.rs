@@ -17,12 +17,23 @@ lazy_static! {
 }
 ```
 
-Metadata (such as doc comments) is allowed on each ref.
+Attributes (including doc comments) are supported as well:
+
+```rust
+# #[macro_use]
+# extern crate lazy_static;
+# fn main() {
+lazy_static! {
+    /// This is an example for using doc comment attributes
+    static ref EXAMPLE: u8 = 42;
+}
+# }
+```
 
 # Semantic
 
 For a given `static ref NAME: TYPE = EXPR;`, the macro generates a unique type that
-implements `Deref<TYPE>` and stores it in a static with name `NAME`. (Metadata ends up
+implements `Deref<TYPE>` and stores it in a static with name `NAME`. (Attributes end up
 attaching to this type.)
 
 On first deref, `EXPR` gets evaluated and stored internally, such that all further derefs
@@ -74,29 +85,34 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 #![no_std]
 
 #[cfg(not(feature="nightly"))]
+#[doc(hidden)]
 pub mod lazy;
 
 #[cfg(all(feature="nightly", not(feature="spin_no_std")))]
 #[path="nightly_lazy.rs"]
+#[doc(hidden)]
 pub mod lazy;
 
 #[cfg(all(feature="nightly", feature="spin_no_std"))]
 #[path="core_lazy.rs"]
+#[doc(hidden)]
 pub mod lazy;
 
+#[doc(hidden)]
 pub use core::ops::Deref as __Deref;
 
 #[macro_export]
 #[cfg_attr(feature="nightly", allow_internal_unstable)]
-macro_rules! lazy_static {
+#[doc(hidden)]
+macro_rules! __lazy_static_internal {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+        __lazy_static_internal!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
     ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+        __lazy_static_internal!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
     (@$VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
-        lazy_static!(@MAKE TY, $VIS, $(#[$attr])*, $N);
+        __lazy_static_internal!(@MAKE TY, $VIS, $(#[$attr])*, $N);
         impl $crate::__Deref for $N {
             type Target = $T;
             #[allow(unsafe_code)]
@@ -114,7 +130,7 @@ macro_rules! lazy_static {
                 }
             }
         }
-        lazy_static!($($t)*);
+        __lazy_static_internal!($($t)*);
     };
     (@MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
@@ -136,3 +152,26 @@ macro_rules! lazy_static {
     };
     () => ()
 }
+
+#[macro_export]
+#[cfg_attr(feature="nightly", allow_internal_unstable)]
+macro_rules! lazy_static {
+    ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        __lazy_static_internal!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+    };
+    ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        __lazy_static_internal!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+    };
+    () => ()
+}
+
+/*
+trait LazyStatic<T>: Deref<Target=T> {
+
+}
+
+///
+pub fn initialize<T>(lazy: &lazy::Lazy<T>) {
+
+}
+*/

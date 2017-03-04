@@ -20,6 +20,7 @@ impl<T: Sync> Lazy<T> {
 
 #[macro_export]
 #[allow_internal_unstable]
+#[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
         static $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::new();

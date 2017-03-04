@@ -24,6 +24,7 @@ impl<T: Sync> Lazy<T> {
 unsafe impl<T: Sync> Sync for Lazy<T> {}
 
 #[macro_export]
+#[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
         use std::sync::ONCE_INIT;
