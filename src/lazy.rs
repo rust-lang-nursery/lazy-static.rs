@@ -27,7 +27,8 @@ unsafe impl<T: Sync> Sync for Lazy<T> {}
 #[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
+        use std::ptr::null;
         use std::sync::ONCE_INIT;
-        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(0 as *const $T, ONCE_INIT);
+        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(null::<$T>(), ONCE_INIT);
     }
 }
