@@ -30,7 +30,7 @@ lazy_static! {
 # }
 ```
 
-# Semantic
+# Semantics
 
 For a given `static ref NAME: TYPE = EXPR;`, the macro generates a unique type that
 implements `Deref<TYPE>` and stores it in a static with name `NAME`. (Attributes end up
@@ -42,6 +42,8 @@ if you have multiple lazy statics that depend on each other in their initializat
 
 Like regular `static mut`s, this macro only works for types that fulfill the `Sync`
 trait.
+
+`drop` is never called on static objects.
 
 # Example
 
