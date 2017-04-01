@@ -119,7 +119,7 @@ macro_rules! __lazy_static_internal {
         impl $crate::__Deref for $N {
             type Target = $T;
             #[allow(unsafe_code)]
-            fn deref<'a>(&'a self) -> &'a $T {
+            fn deref(&self) -> &$T {
                 unsafe {
                     #[inline(always)]
                     fn __static_ref_initialize() -> $T { $e }

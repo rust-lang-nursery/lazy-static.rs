@@ -147,3 +147,12 @@ fn pre_init() {
     lazy_static::initialize(&PRE_INIT);
     assert_eq!(PRE_INIT_FLAG.load(SeqCst), true);
 }
+
+lazy_static! {
+    static ref LIFETIME_NAME: for<'a> fn(&'a u8) = { fn f(_: &u8) {} f };
+}
+
+#[test]
+fn lifetime_name() {
+    let _ = LIFETIME_NAME;
+}
