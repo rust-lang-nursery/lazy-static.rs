@@ -6,7 +6,7 @@ license = "MIT"
 
 description = "A macro for declaring lazily evaluated statics in Rust."
 readme = "README.md"
-documentation = "http://rust-lang-nursery.github.io/lazy-static.rs/lazy_static/index.html"
+documentation = "https://docs.rs/lazy_static"
 
 repository = "https://github.com/rust-lang-nursery/lazy-static.rs"
 keywords = ["macro", "lazy", "static"]
