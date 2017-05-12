@@ -11,6 +11,7 @@ documentation = "https://docs.rs/lazy_static"
 
 repository = "https://github.com/rust-lang-nursery/lazy-static.rs"
 keywords = ["macro", "lazy", "static"]
+categories = ["rust-patterns", "no-std", "memory-management"]
 
 [dependencies.spin]
 version = "0.4"
