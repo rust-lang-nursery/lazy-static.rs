@@ -53,6 +53,8 @@ have generally the same properties as regular "static" variables:
 - Any type in them needs to fulfill the `Sync` trait.
 - If the type has a destructor, then it will not run when the process exits.
 
+`drop` is never called on static objects.
+
 # Example
 
 Using the macro:
