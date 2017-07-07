@@ -119,11 +119,23 @@ macro_rules! __lazy_static_internal {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         __lazy_static_internal!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
+    ($(#[$attr:meta])* pub(in $in:path) static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        __lazy_static_internal!(@PUB_IN, $in, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+    };
     ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         __lazy_static_internal!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
+    (@PUB_IN, $in:path, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        __lazy_static_internal!(@MAKE TY, PUB_IN, $in, $(#[$attr])*, $N);
+        __lazy_static_internal!(@TAIL, $N : $T = $e);
+        __lazy_static_internal!($($t)*);
+    };
     (@$VIS:ident, $(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         __lazy_static_internal!(@MAKE TY, $VIS, $(#[$attr])*, $N);
+        __lazy_static_internal!(@TAIL, $N : $T = $e);
+        __lazy_static_internal!($($t)*);
+    };
+    (@TAIL, $N:ident : $T:ty = $e:expr) => {
         impl $crate::__Deref for $N {
             type Target = $T;
             #[allow(unsafe_code)]
@@ -146,7 +158,6 @@ macro_rules! __lazy_static_internal {
                 let _ = &**lazy;
             }
         }
-        __lazy_static_internal!($($t)*);
     };
     (@MAKE TY, PUB, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
@@ -156,6 +167,15 @@ macro_rules! __lazy_static_internal {
         pub struct $N {__private_field: ()}
         #[doc(hidden)]
         pub static $N: $N = $N {__private_field: ()};
+    };
+    (@MAKE TY, PUB_IN, $in:path, $(#[$attr:meta])*, $N:ident) => {
+        #[allow(missing_copy_implementations)]
+        #[allow(non_camel_case_types)]
+        #[allow(dead_code)]
+        $(#[$attr])*
+        pub(in $in) struct $N {__private_field: ()}
+        #[doc(hidden)]
+        pub(in $in) static $N: $N = $N {__private_field: ()};
     };
     (@MAKE TY, PRIV, $(#[$attr:meta])*, $N:ident) => {
         #[allow(missing_copy_implementations)]
@@ -174,6 +194,9 @@ macro_rules! __lazy_static_internal {
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         __lazy_static_internal!(@PRIV, $(#[$attr])* static ref $N : $T = $e; $($t)*);
+    };
+    ($(#[$attr:meta])* pub (in $in:path) static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
+        __lazy_static_internal!(@PUB_IN, $in, $(#[$attr])* static ref $N : $T = $e; $($t)*);
     };
     ($(#[$attr:meta])* pub static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         __lazy_static_internal!(@PUB, $(#[$attr])* static ref $N : $T = $e; $($t)*);
