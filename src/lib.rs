@@ -90,7 +90,7 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 
 */
 
-#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable, core_intrinsics))]
+#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable, core_intrinsics, const_unsafe_cell_new))]
 
 #![doc(html_root_url = "https://docs.rs/lazy_static/0.2.8")]
 #![no_std]
