@@ -50,5 +50,10 @@ install:
 build: false
 
 test_script:
-  - cargo build --verbose --target %TARGET%
-  - cargo test --target %TARGET%
+  - cargo build --verbose
+  - cargo test
+  - if [%CHANNEL%]==[nightly] (
+      cargo clean &&
+      cargo build --verbose --features "compiletest" &&
+      cargo test --features "compiletest"
+    )
