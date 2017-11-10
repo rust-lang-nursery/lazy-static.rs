@@ -40,7 +40,7 @@ environment:
 # (Based on from https://github.com/rust-lang/libc/blob/master/appveyor.yml)
 install:
   - appveyor-retry appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
-  - rustup-init.exe -y --default-host %TARGET%
+  - rustup-init.exe -y --default-toolchain %CHANNEL% --default-host %TARGET%
   - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
   - if "%TARGET%" == "i686-pc-windows-gnu" set PATH=%PATH%;C:\msys64\mingw32\bin
   - if "%TARGET%" == "x86_64-pc-windows-gnu" set PATH=%PATH%;C:\msys64\mingw64\bin
