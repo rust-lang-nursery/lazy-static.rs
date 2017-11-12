@@ -27,10 +27,6 @@ lazy_static! {
     static ref UNSAFE: u32 = unsafe {
         std::mem::transmute::<i32, u32>(-1)
     };
-
-    // This *should* triggger warn(dead_code) by design.
-    static ref UNUSED: () = ();
-
 }
 
 lazy_static! {
