@@ -8,16 +8,12 @@
 extern crate std;
 
 use self::std::prelude::v1::*;
-use self::std::sync::{Once, ONCE_INIT};
+use self::std::sync::Once;
+pub use self::std::sync::ONCE_INIT;
 
-pub struct Lazy<T: Sync>(Option<T>, Once);
+pub struct Lazy<T: Sync>(pub Option<T>, pub Once);
 
 impl<T: Sync> Lazy<T> {
-    #[inline(always)]
-    pub const fn new() -> Self {
-        Lazy(None, ONCE_INIT)
-    }
-
     #[inline(always)]
     pub fn get<F>(&'static mut self, f: F) -> &T
         where F: FnOnce() -> T
@@ -31,7 +27,7 @@ impl<T: Sync> Lazy<T> {
         unsafe {
             match self.0 {
                 Some(ref x) => x,
-                None => std::intrinsics::unreachable(),
+                None => std::mem::unreachable(),
             }
         }
     }
@@ -40,10 +36,8 @@ impl<T: Sync> Lazy<T> {
 unsafe impl<T: Sync> Sync for Lazy<T> {}
 
 #[macro_export]
-#[allow_internal_unstable]
-#[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
-        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::new();
+        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(None, $crate::lazy::ONCE_INIT);
     }
 }

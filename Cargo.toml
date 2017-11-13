@@ -14,7 +14,7 @@ keywords = ["macro", "lazy", "static"]
 categories = [ "no-std", "rust-patterns", "memory-management" ]
 
 [dependencies.spin]
-version = "0.4"
+version = "0.4.6"
 optional = true
 
 [dependencies.compiletest_rs]
