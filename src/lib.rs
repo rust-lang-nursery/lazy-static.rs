@@ -90,9 +90,10 @@ The `Deref` implementation uses a hidden static variable that is guarded by a at
 
 */
 
-#![cfg_attr(feature="nightly", feature(const_fn, allow_internal_unstable, core_intrinsics, const_unsafe_cell_new))]
+#![cfg_attr(feature="spin_no_std", feature(const_fn))]
+#![cfg_attr(feature="nightly", feature(unreachable))]
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/0.2.8")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/0.2.10")]
 #![no_std]
 
 #[cfg(not(feature="nightly"))]
@@ -113,7 +114,6 @@ pub mod lazy;
 pub use core::ops::Deref as __Deref;
 
 #[macro_export]
-#[cfg_attr(feature="nightly", allow_internal_unstable)]
 #[doc(hidden)]
 macro_rules! __lazy_static_internal {
     // optional visibility restrictions are wrapped in `()` to allow for
@@ -161,7 +161,6 @@ macro_rules! __lazy_static_internal {
 }
 
 #[macro_export]
-#[cfg_attr(feature="nightly", allow_internal_unstable)]
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         // use `()` to explicitly forward the information about private items
