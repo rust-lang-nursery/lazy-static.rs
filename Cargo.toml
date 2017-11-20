@@ -30,7 +30,7 @@ compiletest = ["compiletest_rs"]
 appveyor = { repository = "rust-lang-nursery/lazy-static.rs" }
 travis-ci = { repository = "rust-lang-nursery/lazy-static.rs" }
 
-# is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/lazy-static.rs" }
-# is-it-maintained-open-issues = { repository = "rust-lang-nursery/lazy-static.rs" }
+is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/lazy-static.rs" }
+is-it-maintained-open-issues = { repository = "rust-lang-nursery/lazy-static.rs" }
 
 maintenance = { status = "passively-maintained" }
