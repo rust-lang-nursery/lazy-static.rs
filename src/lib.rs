@@ -86,14 +86,24 @@ fn main() {
 
 # Implementation details
 
-The `Deref` implementation uses a hidden static variable that is guarded by a atomic check on each access. On stable Rust, the macro may need to allocate each static on the heap.
+The `Deref` implementation uses a hidden static variable that is guarded by a atomic check on each access.
+
+# Cargo features
+
+This crate provides two cargo features:
+
+- `nightly`: This uses unstable language features only available on the nightly release channel for a more optimal implementation. In practice this currently means avoiding a heap allocation per static. This feature might get deprecated at a later point once all relevant optimizations are usable from stable.
+- `spin_no_std` (implies `nightly`): This allows using this crate in a no-std environment, by depending on the standalone `spin` crate.
+
+Both features depend on unstable language features, which means
+no guarantees can be made about them in regard to SemVer stability.
 
 */
 
 #![cfg_attr(feature="spin_no_std", feature(const_fn))]
 #![cfg_attr(feature="nightly", feature(unreachable))]
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/0.2.11")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.0.0")]
 #![no_std]
 
 #[cfg(not(feature="nightly"))]
