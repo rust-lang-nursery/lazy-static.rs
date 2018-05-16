@@ -3,7 +3,7 @@ warning/note/help/error at compilation. Syntax of annotations is described in
 [rust documentation](https://github.com/rust-lang/rust/blob/master/src/test/COMPILER_TESTS.md).
 For more information check out [`compiletest` crate](https://github.com/laumann/compiletest-rs).
 
-To run compile tests issue `cargo +nightly --test --features compiletest`.
+To run compile tests issue `cargo +nightly --test`.
 
 ## Notes on working with `compiletest` crate
 
