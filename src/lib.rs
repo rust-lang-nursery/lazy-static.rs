@@ -86,7 +86,7 @@ fn main() {
 
 # Implementation details
 
-The `Deref` implementation uses a hidden static variable that is guarded by a atomic check on each access.
+The `Deref` implementation uses a hidden static variable that is guarded by an atomic check on each access.
 
 # Cargo features
 
