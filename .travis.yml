@@ -13,8 +13,10 @@ matrix:
         - cargo bench --features nightly
         - cargo test --features spin_no_std
         - cargo bench --features spin_no_std
+        - cd compiletest
         - cargo clean
-        - cargo test --features compiletest
+        - cargo test
+        - cd ../
 
     - rust: nightly
       before_script:

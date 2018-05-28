@@ -17,14 +17,9 @@ categories = [ "no-std", "rust-patterns", "memory-management" ]
 version = "0.4.6"
 optional = true
 
-[dependencies.compiletest_rs]
-version = "0.3"
-optional = true
-
 [features]
 nightly = []
 spin_no_std = ["nightly", "spin"]
-compiletest = ["compiletest_rs"]
 
 [badges]
 appveyor = { repository = "rust-lang-nursery/lazy-static.rs" }
