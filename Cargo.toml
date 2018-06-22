@@ -13,9 +13,14 @@ repository = "https://github.com/rust-lang-nursery/lazy-static.rs"
 keywords = ["macro", "lazy", "static"]
 categories = [ "no-std", "rust-patterns", "memory-management" ]
 
+build = "build.rs"
+
 [dependencies.spin]
 version = "0.4.6"
 optional = true
+
+[build-dependencies]
+rustc_version = "0.2.2"
 
 [features]
 nightly = []

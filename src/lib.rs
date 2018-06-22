@@ -100,22 +100,23 @@ no guarantees can be made about them in regard to SemVer stability.
 
 */
 
-#![cfg_attr(feature="spin_no_std", feature(const_fn))]
-#![cfg_attr(feature="nightly", feature(unreachable))]
+// NOTE: see build.rs for where these cfg values are set.
+#![cfg_attr(lazy_static_spin_impl, feature(const_fn))]
 
 #![doc(html_root_url = "https://docs.rs/lazy_static/1.0.1")]
 #![no_std]
 
-#[cfg(not(feature="nightly"))]
+#[cfg(lazy_static_heap_impl)]
+#[path="heap_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 
-#[cfg(all(feature="nightly", not(feature="spin_no_std")))]
-#[path="nightly_lazy.rs"]
+#[cfg(lazy_static_inline_impl)]
+#[path="inline_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 
-#[cfg(all(feature="nightly", feature="spin_no_std"))]
+#[cfg(lazy_static_spin_impl)]
 #[path="core_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
