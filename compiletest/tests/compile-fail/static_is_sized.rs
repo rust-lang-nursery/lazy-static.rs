@@ -1,4 +1,4 @@
-// error-pattern:the trait bound `str: std::marker::Sized` is not satisfied
+// error-pattern:the size for value values of type `str` cannot be known at compilation time
 #[macro_use]
 extern crate lazy_static_compiletest as lazy_static;
 
