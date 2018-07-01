@@ -9,6 +9,10 @@ This includes anything requiring heap allocations, like vectors or hash maps,
 as well as anything that requires non-const function calls to be computed.
 
 [![Travis-CI Status](https://travis-ci.org/rust-lang-nursery/lazy-static.rs.svg?branch=master)](https://travis-ci.org/rust-lang-nursery/lazy-static.rs)
+[![Latest version](https://img.shields.io/crates/v/lazy_static.svg)](https://crates.io/crates/lazy_static)
+[![Documentation](https://docs.rs/lazy_static/badge.svg)](https://docs.rs/lazy_static)
+[![License](https://img.shields.io/crates/l/lazy_static.svg)](https://github.com/rust-lang-nursery/lazy-static.rs#license)
+
 
 # Getting Started
 
