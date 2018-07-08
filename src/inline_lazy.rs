@@ -5,19 +5,22 @@
 // http://opensource.org/licenses/MIT>, at your option. This file may not be
 // copied, modified, or distributed except according to those terms.
 
-extern crate std;
 extern crate core;
+extern crate std;
 
 use self::std::prelude::v1::*;
 use self::std::sync::Once;
 pub use self::std::sync::ONCE_INIT;
 
-pub struct Lazy<T: Sync>(pub Option<T>, pub Once);
+pub struct Lazy<T: Sync>(Option<T>, Once);
 
 impl<T: Sync> Lazy<T> {
+    pub const INIT: Self = Lazy(None, ONCE_INIT);
+
     #[inline(always)]
     pub fn get<F>(&'static mut self, f: F) -> &T
-        where F: FnOnce() -> T
+    where
+        F: FnOnce() -> T,
     {
         {
             let r = &mut self.0;
@@ -40,6 +43,6 @@ unsafe impl<T: Sync> Sync for Lazy<T> {}
 #[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
-        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy(None, $crate::lazy::ONCE_INIT);
-    }
+        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
+    };
 }
