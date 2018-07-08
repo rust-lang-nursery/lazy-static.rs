@@ -31,7 +31,7 @@ impl<T: Sync> Lazy<T> {
         unsafe {
             match self.0 {
                 Some(ref x) => x,
-                None => core::hint::unreachable_unchecked(),
+                None => unreachable_unchecked(),
             }
         }
     }
@@ -45,4 +45,16 @@ macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
         static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
     };
+}
+
+#[cfg(lazy_static_core_unreachable_unchecked)]
+use core::hint::unreachable_unchecked;
+
+#[cfg(not(lazy_static_core_unreachable_unchecked))]
+/// Polyfill for core::hint::unreachable_unchecked. Included to support Rust prior to 1.27. See
+/// [issue #102](https://github.com/rust-lang-nursery/lazy-static.rs/issues/102#issuecomment-400959779)
+/// for details.
+unsafe fn unreachable_unchecked() -> ! {
+    enum Void {}
+    match std::mem::uninitialized::<Void>() {}
 }

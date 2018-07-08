@@ -23,8 +23,8 @@ fn main() {
     let nightly_feature_enabled = is_var_set("CARGO_FEATURE_NIGHTLY");
     let spin_feature_enabled = is_var_set("CARGO_FEATURE_SPIN_NO_STD");
 
-    let version_geq_127 = version().unwrap() >= Version::new(1, 27, 0);
-    let unreachable_hint_supported = version_geq_127 || nightly_feature_enabled;
+    let version_geq_122 = version().unwrap() >= Version::new(1, 22, 0);
+    let drop_in_static_supported = version_geq_122 || nightly_feature_enabled;
 
     // precedence:
     // 1. explicit requests via cfg or spin_no_std feature
@@ -36,11 +36,17 @@ fn main() {
         "inline"
     } else if force_spin_cfg || spin_feature_enabled {
         "spin"
-    } else if unreachable_hint_supported {
+    } else if drop_in_static_supported {
         "inline"
     } else {
         "heap"
     };
 
     println!("cargo:rustc-cfg=lazy_static_{}_impl", impl_name);
+
+    let version_geq_127 = version().unwrap() >= Version::new(1, 27, 0);
+    let core_unreachable_unchecked_supported = version_geq_127 || nightly_feature_enabled;
+    if core_unreachable_unchecked_supported {
+        println!("cargo:rustc-cfg=lazy_static_core_unreachable_unchecked");
+    }
 }
