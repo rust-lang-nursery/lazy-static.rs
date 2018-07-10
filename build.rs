@@ -43,10 +43,4 @@ fn main() {
     };
 
     println!("cargo:rustc-cfg=lazy_static_{}_impl", impl_name);
-
-    let version_geq_127 = version().unwrap() >= Version::new(1, 27, 0);
-    let core_unreachable_unchecked_supported = version_geq_127 || nightly_feature_enabled;
-    if core_unreachable_unchecked_supported {
-        println!("cargo:rustc-cfg=lazy_static_core_unreachable_unchecked");
-    }
 }

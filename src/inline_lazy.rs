@@ -47,13 +47,12 @@ macro_rules! __lazy_static_create {
     };
 }
 
-#[cfg(lazy_static_core_unreachable_unchecked)]
-use core::hint::unreachable_unchecked;
-
-#[cfg(not(lazy_static_core_unreachable_unchecked))]
-/// Polyfill for core::hint::unreachable_unchecked. Included to support Rust prior to 1.27. See
-/// [issue #102](https://github.com/rust-lang-nursery/lazy-static.rs/issues/102#issuecomment-400959779)
-/// for details.
+/// Polyfill for std::hint::unreachable_unchecked. There currently exists a
+/// [crate](https://docs.rs/unreachable) for an equivalent to std::hint::unreachable_unchecked, but
+/// lazy_static currently doesn't include any runtime dependencies and we've chosen to include this
+/// short polyfill rather than include a new crate in every consumer's build.
+///
+/// This should be replaced by std's version when lazy_static starts to require at least Rust 1.27.
 unsafe fn unreachable_unchecked() -> ! {
     enum Void {}
     match std::mem::uninitialized::<Void>() {}
