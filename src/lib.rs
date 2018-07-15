@@ -103,7 +103,7 @@ no guarantees can be made about them in regard to SemVer stability.
 #![cfg_attr(feature="spin_no_std", feature(const_fn))]
 #![cfg_attr(feature="nightly", feature(unreachable))]
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/1.0.1")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.0.2")]
 #![no_std]
 
 #[cfg(not(feature="nightly"))]
