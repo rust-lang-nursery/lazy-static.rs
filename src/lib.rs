@@ -123,7 +123,7 @@ pub mod lazy;
 #[doc(hidden)]
 pub use core::ops::Deref as __Deref;
 
-#[macro_export]
+#[macro_export(local_inner_macros)]
 #[doc(hidden)]
 macro_rules! __lazy_static_internal {
     // optional visibility restrictions are wrapped in `()` to allow for
@@ -170,7 +170,7 @@ macro_rules! __lazy_static_internal {
     () => ()
 }
 
-#[macro_export]
+#[macro_export(local_inner_macros)]
 macro_rules! lazy_static {
     ($(#[$attr:meta])* static ref $N:ident : $T:ty = $e:expr; $($t:tt)*) => {
         // use `()` to explicitly forward the information about private items
