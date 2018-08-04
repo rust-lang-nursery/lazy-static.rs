@@ -1,6 +1,4 @@
-extern crate rustc_version;
-
-use rustc_version::{version, Version};
+extern crate version_check;
 
 fn main() {
     let is_var_set = |s| std::env::var_os(s).is_some();
@@ -23,7 +21,7 @@ fn main() {
     let nightly_feature_enabled = is_var_set("CARGO_FEATURE_NIGHTLY");
     let spin_feature_enabled = is_var_set("CARGO_FEATURE_SPIN_NO_STD");
 
-    let version_geq_122 = version().unwrap() >= Version::new(1, 22, 0);
+    let version_geq_122 = version_check::is_min_version("1.22.0").unwrap().0;
     let drop_in_static_supported = version_geq_122 || nightly_feature_enabled;
 
     // precedence:
