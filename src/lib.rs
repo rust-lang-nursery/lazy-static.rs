@@ -103,7 +103,7 @@ no guarantees can be made about them in regard to SemVer stability.
 // NOTE: see build.rs for where these cfg values are set.
 #![cfg_attr(lazy_static_spin_impl, feature(const_fn))]
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/1.1.0")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.2.0")]
 #![no_std]
 
 #[cfg(lazy_static_heap_impl)]
@@ -118,6 +118,11 @@ pub mod lazy;
 
 #[cfg(lazy_static_spin_impl)]
 #[path="core_lazy.rs"]
+#[doc(hidden)]
+pub mod lazy;
+
+#[cfg(lazy_static_rw_spin_impl)]
+#[path="stable_core_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 
