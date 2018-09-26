@@ -13,6 +13,12 @@ as well as anything that requires non-const function calls to be computed.
 [![Documentation](https://docs.rs/lazy_static/badge.svg)](https://docs.rs/lazy_static)
 [![License](https://img.shields.io/crates/l/lazy_static.svg)](https://github.com/rust-lang-nursery/lazy-static.rs#license)
 
+## Minimum supported `rustc`
+
+`1.21.0+`
+
+This version is explicitly tested in CI and may only be bumped in new minor versions. Any changes to the supported minimum version will be called out in the release notes.
+
 
 # Getting Started
 
