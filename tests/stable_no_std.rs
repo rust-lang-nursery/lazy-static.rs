@@ -7,13 +7,13 @@ extern crate lazy_static;
 lazy_static! {
     /// Documentation + attribute!
     #[doc(hidden)]
-    pub static ref NUMBER: u128 = long_computation(20);
+    pub static ref NUMBER: u64 = long_computation(10);
 }
 
-fn long_computation(n: u128) -> u128 {
+fn long_computation(n: u64) -> u64 {
     let mut acc = 1;
 
-    for n in 2 ..= n {
+    for n in 2 .. n + 1 {
         acc *= n;
     }
 
@@ -22,5 +22,5 @@ fn long_computation(n: u128) -> u128 {
 
 #[test]
 fn test_basic() {
-    assert_eq!(*NUMBER, 2432902008176640000);
+    assert_eq!(*NUMBER, 3628800);
 }
