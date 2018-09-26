@@ -90,10 +90,11 @@ The `Deref` implementation uses a hidden static variable that is guarded by an a
 
 # Cargo features
 
-This crate provides two cargo features:
+This crate provides three cargo features:
 
 - `nightly`: This uses unstable language features only available on the nightly release channel for a more optimal implementation. In practice this currently means avoiding a heap allocation per static. This feature might get deprecated at a later point once all relevant optimizations are usable from stable.
 - `spin_no_std` (implies `nightly`): This allows using this crate in a no-std environment, by depending on the standalone `spin` crate.
+- `stable_no_std`: This allows using this crate in a no-std environment, without dependencies and on stable Rust.
 
 Both features depend on unstable language features, which means
 no guarantees can be made about them in regard to SemVer stability.
