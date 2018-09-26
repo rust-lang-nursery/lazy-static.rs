@@ -23,11 +23,9 @@ impl<T: Sync> Lazy<T> {
     where
         F: FnOnce() -> T,
     {
-        {
-            self.1.call_once(|| {
-                self.0.set(Some(f()));
-            });
-        }
+        self.1.call_once(|| {
+            self.0.set(Some(f()));
+        });
 
         // `self.0` is guaranteed to be `Some` by this point
         // The `Once` will catch and propegate panics
