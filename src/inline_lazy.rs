@@ -44,7 +44,7 @@ unsafe impl<T: Sync> Sync for Lazy<T> {}
 #[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
-        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
+        static $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
     };
 }
 
