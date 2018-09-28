@@ -8,14 +8,14 @@
 extern crate std;
 
 use self::std::prelude::v1::*;
-use self::std::ptr;
+use self::std::cell::Cell;
 use self::std::sync::Once;
 pub use self::std::sync::ONCE_INIT;
 
-pub struct Lazy<T: Sync>(*const T, Once);
+pub struct Lazy<T: Sync>(Cell<*const T>, Once);
 
 impl<T: Sync> Lazy<T> {
-    pub const INIT: Self = Lazy(0 as *const T, ONCE_INIT);
+    pub const INIT: Self = Lazy(Cell::new(0 as *const T), ONCE_INIT);
 
     #[inline(always)]
     pub fn get<F>(&'static self, f: F) -> &T
@@ -23,19 +23,12 @@ impl<T: Sync> Lazy<T> {
         F: FnOnce() -> T,
     {
         self.1.call_once(|| {
-            let r = Box::into_raw(Box::new(f()));
-            
-            // This is safe because the `Once` guarantees we
-            // have exclusive access to the value field
-            // The value hasn't been previously initialized
-            unsafe {
-                ptr::write(&self.0 as *const _ as *mut _, r);
-            }
+            self.0.set(Box::into_raw(Box::new(f())));
         });
 
         // `self.0` is guaranteed to have a value by this point
         // The `Once` will catch and propegate panics
-        unsafe { &*self.0 }
+        unsafe { &*self.0.get() }
     }
 }
 
