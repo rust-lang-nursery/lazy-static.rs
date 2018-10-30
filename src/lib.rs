@@ -137,19 +137,16 @@ macro_rules! __lazy_static_internal {
     (@TAIL, $N:ident : $T:ty = $e:expr) => {
         impl $crate::__Deref for $N {
             type Target = $T;
-            #[allow(unsafe_code)]
             fn deref(&self) -> &$T {
-                unsafe {
-                    #[inline(always)]
-                    fn __static_ref_initialize() -> $T { $e }
+                #[inline(always)]
+                fn __static_ref_initialize() -> $T { $e }
 
-                    #[inline(always)]
-                    unsafe fn __stability() -> &'static $T {
-                        __lazy_static_create!(LAZY, $T);
-                        LAZY.get(__static_ref_initialize)
-                    }
-                    __stability()
+                #[inline(always)]
+                fn __stability() -> &'static $T {
+                    __lazy_static_create!(LAZY, $T);
+                    LAZY.get(__static_ref_initialize)
                 }
+                __stability()
             }
         }
         impl $crate::LazyStatic for $N {
