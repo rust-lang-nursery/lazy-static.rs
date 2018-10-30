@@ -32,7 +32,11 @@ impl<T: Sync> Lazy<T> {
         unsafe {
             match *self.0.as_ptr() {
                 Some(ref x) => x,
-                None => unreachable_unchecked(),
+                None => {
+                    debug_assert!(false, "attempted to derefence an uninitialized lazy static. This is a bug");
+
+                    unreachable_unchecked()
+                },
             }
         }
     }
