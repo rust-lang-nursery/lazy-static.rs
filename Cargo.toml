@@ -17,15 +17,17 @@ exclude = ["/.travis.yml", "/appveyor.yml"]
 build = "build.rs"
 
 [dependencies.spin]
-version = "0.4.6"
+version = "0.4.10"
 optional = true
+default-features = false
+features = ["once"]
 
 [build-dependencies]
 version_check = "0.1.4"
 
 [features]
 nightly = []
-spin_no_std = ["nightly", "spin"]
+spin_no_std = ["spin"]
 
 [badges]
 appveyor = { repository = "rust-lang-nursery/lazy-static.rs" }
