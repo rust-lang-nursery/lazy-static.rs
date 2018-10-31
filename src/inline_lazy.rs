@@ -13,6 +13,7 @@ use self::std::cell::Cell;
 use self::std::sync::Once;
 pub use self::std::sync::ONCE_INIT;
 
+// FIXME: Replace Option<T> with MaybeInitialized<T>
 pub struct Lazy<T: Sync>(Cell<Option<T>>, Once);
 
 impl<T: Sync> Lazy<T> {
