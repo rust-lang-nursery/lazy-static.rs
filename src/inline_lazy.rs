@@ -9,29 +9,35 @@ extern crate core;
 extern crate std;
 
 use self::std::prelude::v1::*;
+use self::std::cell::Cell;
 use self::std::sync::Once;
 pub use self::std::sync::ONCE_INIT;
 
-pub struct Lazy<T: Sync>(Option<T>, Once);
+// FIXME: Replace Option<T> with MaybeInitialized<T>
+pub struct Lazy<T: Sync>(Cell<Option<T>>, Once);
 
 impl<T: Sync> Lazy<T> {
-    pub const INIT: Self = Lazy(None, ONCE_INIT);
+    pub const INIT: Self = Lazy(Cell::new(None), ONCE_INIT);
 
     #[inline(always)]
-    pub fn get<F>(&'static mut self, f: F) -> &T
+    pub fn get<F>(&'static self, f: F) -> &T
     where
         F: FnOnce() -> T,
     {
-        {
-            let r = &mut self.0;
-            self.1.call_once(|| {
-                *r = Some(f());
-            });
-        }
+        self.1.call_once(|| {
+            self.0.set(Some(f()));
+        });
+
+        // `self.0` is guaranteed to be `Some` by this point
+        // The `Once` will catch and propegate panics
         unsafe {
-            match self.0 {
+            match *self.0.as_ptr() {
                 Some(ref x) => x,
-                None => unreachable_unchecked(),
+                None => {
+                    debug_assert!(false, "attempted to derefence an uninitialized lazy static. This is a bug");
+
+                    unreachable_unchecked()
+                },
             }
         }
     }
@@ -43,7 +49,7 @@ unsafe impl<T: Sync> Sync for Lazy<T> {}
 #[doc(hidden)]
 macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
-        static mut $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
+        static $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
     };
 }
 
