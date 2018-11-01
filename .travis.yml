@@ -3,6 +3,9 @@ matrix:
   include:
     - rust: 1.21.0
     - rust: stable
+      script:
+        - cargo test
+        - cargo test --features spin_no_std
     - os: osx
     - rust: beta
     - rust: nightly
