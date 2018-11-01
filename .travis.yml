@@ -12,10 +12,6 @@ matrix:
       script:
         - cargo test
         - cargo bench
-        - cargo test --features nightly
-        - cargo bench --features nightly
-        - CARGO_CFG_LAZY_STATIC_HEAP_IMPL=1 cargo test
-        - CARGO_CFG_LAZY_STATIC_HEAP_IMPL=1 cargo bench
         - cargo test --features spin_no_std
         - cargo bench --features spin_no_std
         - cd compiletest

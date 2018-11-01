@@ -103,17 +103,12 @@ no guarantees can be made about them in regard to SemVer stability.
 #![doc(html_root_url = "https://docs.rs/lazy_static/1.1.0")]
 #![no_std]
 
-#[cfg(lazy_static_heap_impl)]
-#[path="heap_lazy.rs"]
-#[doc(hidden)]
-pub mod lazy;
-
-#[cfg(lazy_static_inline_impl)]
+#[cfg(not(feature = "spin_no_std"))]
 #[path="inline_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 
-#[cfg(lazy_static_spin_impl)]
+#[cfg(feature = "spin_no_std")]
 #[path="core_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
