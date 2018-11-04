@@ -31,7 +31,7 @@ Add the following dependency to your Cargo manifest...
 
 ```toml
 [dependencies]
-lazy_static = "1.1.0"
+lazy_static = "1.2.0"
 ```
 
 ...and see the [docs](https://docs.rs/lazy_static) for how to use it.
