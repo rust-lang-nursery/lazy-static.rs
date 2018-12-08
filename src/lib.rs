@@ -27,8 +27,8 @@ lazy_static! {
 Attributes (including doc comments) are supported as well:
 
 ```rust
-# #[macro_use]
-# extern crate lazy_static;
+# use lazy_static::lazy_static;
+#
 # fn main() {
 lazy_static! {
     /// This is an example for using doc comment attributes
@@ -58,9 +58,7 @@ have generally the same properties as regular "static" variables:
 Using the macro:
 
 ```rust
-#[macro_use]
-extern crate lazy_static;
-
+use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
@@ -192,8 +190,7 @@ pub trait LazyStatic {
 /// Example:
 ///
 /// ```rust
-/// #[macro_use]
-/// extern crate lazy_static;
+/// use lazy_static::lazy_static;
 ///
 /// lazy_static! {
 ///     static ref BUFFER: Vec<u8> = (0..65537).collect();

@@ -38,10 +38,10 @@ lazy_static = "1.2.0"
 
 # Example
 
-```rust
-#[macro_use]
-extern crate lazy_static;
+Using 2018 Edition:
 
+```rust
+use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
