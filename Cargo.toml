@@ -21,7 +21,6 @@ default-features = false
 features = ["once"]
 
 [features]
-nightly = []
 spin_no_std = ["spin"]
 
 [badges]
