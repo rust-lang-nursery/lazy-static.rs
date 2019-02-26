@@ -99,7 +99,7 @@ no guarantees can be made about them in regard to SemVer stability.
 
 */
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/1.2.0")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.3.0")]
 #![no_std]
 
 #[cfg(not(feature = "spin_no_std"))]
