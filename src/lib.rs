@@ -99,7 +99,7 @@ no guarantees can be made about them in regard to SemVer stability.
 
 */
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/1.2.0")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.3.0")]
 #![no_std]
 
 #[cfg(not(feature = "spin_no_std"))]
@@ -195,7 +195,7 @@ pub trait LazyStatic {
 /// extern crate lazy_static;
 ///
 /// lazy_static! {
-///     static ref BUFFER: Vec<u8> = (0..65537).collect();
+///     static ref BUFFER: Vec<u8> = (0..255).collect();
 /// }
 ///
 /// fn main() {
