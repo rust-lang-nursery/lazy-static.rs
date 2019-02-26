@@ -195,7 +195,7 @@ pub trait LazyStatic {
 /// extern crate lazy_static;
 ///
 /// lazy_static! {
-///     static ref BUFFER: Vec<u8> = (0..65537).collect();
+///     static ref BUFFER: Vec<u8> = (0..255).collect();
 /// }
 ///
 /// fn main() {
