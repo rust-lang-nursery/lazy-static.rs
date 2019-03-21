@@ -94,9 +94,6 @@ This crate provides one cargo feature:
 
 - `spin_no_std`: This allows using this crate in a no-std environment, by depending on the standalone `spin` crate.
 
-This feature depends on unstable language features, which means
-no guarantees can be made about them in regard to SemVer stability.
-
 */
 
 #![doc(html_root_url = "https://docs.rs/lazy_static/1.3.0")]
