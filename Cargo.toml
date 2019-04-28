@@ -21,6 +21,9 @@ optional = true
 [features]
 spin_no_std = ["spin"]
 
+[dev-dependencies]
+doc-comment = "0.3.1"
+
 [badges]
 appveyor = { repository = "rust-lang-nursery/lazy-static.rs" }
 travis-ci = { repository = "rust-lang-nursery/lazy-static.rs" }

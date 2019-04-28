@@ -104,6 +104,13 @@ This crate provides one cargo feature:
 #[doc(hidden)]
 pub mod lazy;
 
+#[cfg(test)]
+#[macro_use]
+extern crate doc_comment;
+
+#[cfg(test)]
+doctest!("../README.md");
+
 #[cfg(feature = "spin_no_std")]
 #[path="core_lazy.rs"]
 #[doc(hidden)]
