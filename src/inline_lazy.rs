@@ -10,11 +10,12 @@ extern crate std;
 
 use self::std::prelude::v1::*;
 use self::std::cell::Cell;
+use self::std::hint::unreachable_unchecked;
 use self::std::sync::Once;
 #[allow(deprecated)]
 pub use self::std::sync::ONCE_INIT;
 
-// FIXME: Replace Option<T> with MaybeInitialized<T>
+// FIXME: Replace Option<T> with MaybeUninit<T> (stable since 1.36.0)
 pub struct Lazy<T: Sync>(Cell<Option<T>>, Once);
 
 impl<T: Sync> Lazy<T> {
@@ -31,7 +32,7 @@ impl<T: Sync> Lazy<T> {
         });
 
         // `self.0` is guaranteed to be `Some` by this point
-        // The `Once` will catch and propegate panics
+        // The `Once` will catch and propagate panics
         unsafe {
             match *self.0.as_ptr() {
                 Some(ref x) => x,
@@ -53,16 +54,4 @@ macro_rules! __lazy_static_create {
     ($NAME:ident, $T:ty) => {
         static $NAME: $crate::lazy::Lazy<$T> = $crate::lazy::Lazy::INIT;
     };
-}
-
-/// Polyfill for std::hint::unreachable_unchecked. There currently exists a
-/// [crate](https://docs.rs/unreachable) for an equivalent to std::hint::unreachable_unchecked, but
-/// lazy_static currently doesn't include any runtime dependencies and we've chosen to include this
-/// short polyfill rather than include a new crate in every consumer's build.
-///
-/// This should be replaced by std's version when lazy_static starts to require at least Rust 1.27.
-unsafe fn unreachable_unchecked() -> ! {
-    enum Void {}
-    #[allow(deprecated)]
-    match std::mem::uninitialized::<Void>() {}
 }
