@@ -32,7 +32,7 @@ impl<T: Sync> Lazy<T> {
         });
 
         // `self.0` is guaranteed to be `Some` by this point
-        // The `Once` will catch and propegate panics
+        // The `Once` will catch and propagate panics
         unsafe {
             match *self.0.as_ptr() {
                 Some(ref x) => x,
