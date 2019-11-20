@@ -39,6 +39,7 @@ lazy_static = "1.4.0"
 # Example
 
 ```rust
+use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
