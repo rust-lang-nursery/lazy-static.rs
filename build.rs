@@ -9,7 +9,7 @@ fn main() {
     let force_spin_cfg = is_var_set("CARGO_CFG_LAZY_STATIC_SPIN_IMPL");
 
     let impls_forced = [force_heap_cfg, force_inline_cfg, force_spin_cfg]
-        .into_iter()
+        .iter()
         .filter(|&&f| f)
         .count();
 
