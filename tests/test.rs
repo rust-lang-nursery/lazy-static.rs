@@ -162,3 +162,21 @@ lazy_static! {
 fn lifetime_name() {
     let _ = LIFETIME_NAME;
 }
+
+lazy_static! {
+    static ref RESETTABLE_FLAG: AtomicBool = AtomicBool::new(false);
+}
+
+#[cfg(not(feature = "spin_no_std"))]
+#[test]
+fn reset() {
+    assert_eq!((*RESETTABLE_FLAG).load(SeqCst), false);
+
+    (*RESETTABLE_FLAG).store(true, SeqCst);
+    assert_eq!((*RESETTABLE_FLAG).load(SeqCst), true);
+
+    unsafe {
+        lazy_static::lazy::reset();
+    }
+    assert_eq!((*RESETTABLE_FLAG).load(SeqCst), false);
+}

@@ -100,6 +100,10 @@ This crate provides one cargo feature:
 #![no_std]
 
 #[cfg(not(feature = "spin_no_std"))]
+#[macro_use]
+extern crate std;
+
+#[cfg(not(feature = "spin_no_std"))]
 #[path="inline_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
