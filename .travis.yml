@@ -2,6 +2,8 @@ language: rust
 matrix:
   include:
     - rust: 1.27.2
+      script:
+        - cargo test --all-targets
     - rust: stable
       script:
         - cargo test
