@@ -3,7 +3,7 @@ matrix:
   include:
     - rust: 1.27.2
       script:
-        - cargo test --lib
+        - cargo test --tests
     - rust: stable
       script:
         - cargo test
