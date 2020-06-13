@@ -1,6 +1,6 @@
 //! This example shows how to wrap a data structure in a mutex to achieve safe mutability.
-#[macro_use(lazy_static)]
 extern crate lazy_static;
+use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
