@@ -13,14 +13,13 @@ use self::std::cell::Cell;
 use self::std::hint::unreachable_unchecked;
 use self::std::sync::Once;
 #[allow(deprecated)]
-pub use self::std::sync::ONCE_INIT;
 
 // FIXME: Replace Option<T> with MaybeUninit<T> (stable since 1.36.0)
 pub struct Lazy<T: Sync>(Cell<Option<T>>, Once);
 
 impl<T: Sync> Lazy<T> {
     #[allow(deprecated)]
-    pub const INIT: Self = Lazy(Cell::new(None), ONCE_INIT);
+    pub const INIT: Self = Lazy(Cell::new(None), Once::new());
 
     #[inline(always)]
     pub fn get<F>(&'static self, f: F) -> &T
