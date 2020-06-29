@@ -69,7 +69,10 @@ fn test_meta() {
     assert!(&STRING as *const _ != &copy_of_string as *const _);
 
     // this would not compile if STRING were not marked #[derive(Debug)]
-    assert_eq!(format!("{:?}", STRING), "STRING { __private_field: () }".to_string());
+    assert_eq!(
+        format!("{:?}", STRING),
+        "STRING { __private_field: () }".to_string()
+    );
 }
 
 mod visibility {
@@ -111,10 +114,18 @@ struct Once(X);
 const ONCE_INIT: Once = Once(X);
 static DATA: X = X;
 static ONCE: X = X;
-fn require_sync() -> X { X }
-fn transmute() -> X { X }
-fn __static_ref_initialize() -> X { X }
-fn test(_: Vec<X>) -> X { X }
+fn require_sync() -> X {
+    X
+}
+fn transmute() -> X {
+    X
+}
+fn __static_ref_initialize() -> X {
+    X
+}
+fn test(_: Vec<X>) -> X {
+    X
+}
 
 // All these names should not be shadowed
 lazy_static! {
@@ -133,9 +144,9 @@ fn item_name_shadowing() {
 }
 
 use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering::SeqCst;
 #[allow(deprecated)]
 use std::sync::atomic::ATOMIC_BOOL_INIT;
-use std::sync::atomic::Ordering::SeqCst;
 
 #[allow(deprecated)]
 static PRE_INIT_FLAG: AtomicBool = ATOMIC_BOOL_INIT;
@@ -155,7 +166,10 @@ fn pre_init() {
 }
 
 lazy_static! {
-    static ref LIFETIME_NAME: for<'a> fn(&'a u8) = { fn f(_: &u8) {} f };
+    static ref LIFETIME_NAME: for<'a> fn(&'a u8) = {
+        fn f(_: &u8) {}
+        f
+    };
 }
 
 #[test]
