@@ -98,7 +98,7 @@ This crate provides one cargo feature:
 #![no_std]
 
 #[cfg(not(feature = "spin_no_std"))]
-#[path="inline_lazy.rs"]
+#[path = "inline_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 
@@ -110,7 +110,7 @@ extern crate doc_comment;
 doctest!("../README.md");
 
 #[cfg(feature = "spin_no_std")]
-#[path="core_lazy.rs"]
+#[path = "core_lazy.rs"]
 #[doc(hidden)]
 pub mod lazy;
 

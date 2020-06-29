@@ -8,9 +8,9 @@
 extern crate core;
 extern crate std;
 
-use self::std::prelude::v1::*;
 use self::std::cell::Cell;
 use self::std::hint::unreachable_unchecked;
+use self::std::prelude::v1::*;
 use self::std::sync::Once;
 #[allow(deprecated)]
 pub use self::std::sync::ONCE_INIT;
@@ -37,10 +37,13 @@ impl<T: Sync> Lazy<T> {
             match *self.0.as_ptr() {
                 Some(ref x) => x,
                 None => {
-                    debug_assert!(false, "attempted to derefence an uninitialized lazy static. This is a bug");
+                    debug_assert!(
+                        false,
+                        "attempted to derefence an uninitialized lazy static. This is a bug"
+                    );
 
                     unreachable_unchecked()
-                },
+                }
             }
         }
     }
