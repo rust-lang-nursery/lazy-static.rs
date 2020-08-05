@@ -39,7 +39,7 @@ impl<T: Sync> Lazy<T> {
                 None => {
                     debug_assert!(
                         false,
-                        "attempted to derefence an uninitialized lazy static. This is a bug"
+                        "attempted to dereference an uninitialized lazy static. This is a bug"
                     );
 
                     unreachable_unchecked()
