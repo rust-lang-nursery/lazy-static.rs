@@ -12,7 +12,7 @@ use self::spinning::Once;
 pub struct Lazy<T: Sync>(Once<T>);
 
 impl<T: Sync> Lazy<T> {
-    pub const INIT: Self = Lazy(Once::INIT);
+    pub const INIT: Self = Lazy(Once::new());
 
     #[inline(always)]
     pub fn get<F>(&'static self, builder: F) -> &T
