@@ -90,7 +90,7 @@ The `Deref` implementation uses a hidden static variable that is guarded by an a
 
 This crate provides one cargo feature:
 
-- `spin_no_std`: This allows using this crate in a no-std environment, by depending on the standalone `spin` crate.
+- `spin_no_std`: This allows using this crate in a no-std environment, by depending on the standalone `spinning` crate.
 
 */
 

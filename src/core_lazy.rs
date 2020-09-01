@@ -5,9 +5,9 @@
 // http://opensource.org/licenses/MIT>, at your option. This file may not be
 // copied, modified, or distributed except according to those terms.
 
-extern crate spin;
+extern crate spinning;
 
-use self::spin::Once;
+use self::spinning::Once;
 
 pub struct Lazy<T: Sync>(Once<T>);
 
