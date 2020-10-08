@@ -105,7 +105,7 @@ fn test_visibility() {
 
 // This should not cause a warning about a missing Copy implementation
 lazy_static! {
-    pub static ref VAR: i32 = { 0 };
+    pub static ref VAR: i32 = 0;
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
