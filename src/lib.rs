@@ -94,7 +94,7 @@ This crate provides one cargo feature:
 
 */
 
-#![doc(html_root_url = "https://docs.rs/lazy_static/1.4.0")]
+#![doc(html_root_url = "https://docs.rs/lazy_static/1.4.1")]
 #![no_std]
 
 #[cfg(not(feature = "spin_no_std"))]
