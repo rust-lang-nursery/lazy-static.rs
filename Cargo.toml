@@ -15,7 +15,9 @@ categories = [ "no-std", "rust-patterns", "memory-management" ]
 exclude = ["/.travis.yml", "/appveyor.yml"]
 
 [dependencies.spin]
-version = "0.7.0"
+version = "0.9"
+default-features = false
+features = ["once"]
 optional = true
 
 [features]
