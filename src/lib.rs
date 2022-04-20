@@ -156,6 +156,7 @@ macro_rules! __lazy_static_internal {
         $(#[$attr])*
         $($vis)* struct $N {__private_field: ()}
         #[doc(hidden)]
+        #[allow(non_upper_case_globals)]
         $($vis)* static $N: $N = $N {__private_field: ()};
     };
     () => ()

@@ -1,3 +1,5 @@
+#![deny(warnings)]
+
 #[macro_use]
 extern crate lazy_static;
 use std::collections::HashMap;
@@ -33,6 +35,11 @@ lazy_static! {
 }
 lazy_static! {
     static ref S3: String = [*S1, *S2].join("");
+}
+
+lazy_static! {
+    #[allow(non_upper_case_globals)]
+    pub static ref string: String = "hello".to_string();
 }
 
 #[test]
