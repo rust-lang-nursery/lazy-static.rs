@@ -1,7 +1,7 @@
 language: rust
 matrix:
   include:
-    - rust: 1.27.2
+    - rust: 1.36.0
       script:
         - cargo test --tests
     - rust: stable
