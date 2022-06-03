@@ -1,0 +1,113 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [stable, beta, nightly, macos, win32, win64, mingw]
+        include:
+          - build: stable
+            os: ubuntu-latest
+            rust: stable
+          - build: beta
+            os: ubuntu-latest
+            rust: beta
+          - build: nightly
+            os: ubuntu-latest
+            rust: nightly
+          - build: macos
+            os: macos-latest
+            rust: stable
+          - build: win32
+            os: windows-latest
+            rust: stable-i686
+          - build: win64
+            os: windows-latest
+            rust: stable-x86_64
+          - build: mingw
+            os: windows-latest
+            rust: stable-x86_64-gnu
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Rust
+      run: |
+        rustup update ${{ matrix.rust }} --no-self-update
+        rustup default ${{ matrix.rust }}
+    - run: cargo test --verbose
+    - run: cargo test --verbose --no-default-features
+    - run: cargo test --verbose --all-features
+
+  rustfmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Rust
+      run: |
+        rustup update stable --no-self-update
+        rustup default stable
+        rustup component add rustfmt
+    - run: cargo fmt -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install Rust
+      run: |
+        rustup update stable --no-self-update
+        rustup default stable
+        rustup component add clippy
+    - run: cargo clippy --verbose
+
+  doc:
+    name: Check Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Rust
+      run: |
+        rustup update stable --no-self-update
+        rustup default stable
+        rustup component add rust-docs
+    - name: Run rustdoc
+      run: RUSTDOCFLAGS="-D warnings" cargo doc --verbose --all-features
+
+  minimalv:
+    name: Minimal versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust
+        run: |
+          rustup update nightly --no-self-update
+          rustup default nightly
+      - run: cargo build --verbose -Z minimal-versions --all-features
+
+  msrv:
+    name: MSRV
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust
+        run: |
+          rustup update 1.40.0 --no-self-update
+          rustup default 1.40.0
+      - run: cargo build --verbose
+
+  embedded:
+    name: Embedded
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust
+        run: |
+          rustup update stable --no-self-update
+          rustup default stable
+      - run: rustup target add thumbv6m-none-eabi riscv32imc-unknown-none-elf
+      - run: cargo build --verbose --target=thumbv6m-none-eabi --features spin_no_std
+      - run: cargo build --verbose --target=riscv32imc-unknown-none-elf --features spin_no_std
