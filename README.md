@@ -13,6 +13,7 @@ as well as anything that requires non-const function calls to be computed.
 [![Documentation](https://docs.rs/lazy_static/badge.svg)](https://docs.rs/lazy_static)
 [![License](https://img.shields.io/crates/l/lazy_static.svg)](https://github.com/rust-lang-nursery/lazy-static.rs#license)
 
+
 ## Minimum supported `rustc`
 
 `1.40.0+`
@@ -58,6 +59,35 @@ fn main() {
 
     // Any further access to `HASHMAP` just returns the computed value
     println!("The entry for `1` is \"{}\".", HASHMAP.get(&1).unwrap());
+}
+```
+
+# Standard library
+
+It is now possible to easily replicate this crate's functionality in Rust's standard library with [`std::sync::OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html). The example above could be also be written as:
+
+```rust
+use std::collections::HashMap;
+use std::sync::OnceLock;
+
+static HASHMAP: OnceLock<HashMap<u32, &'static str>> = OnceLock::new();
+
+fn hashmap() -> &'static HashMap<u32, &'static str> {
+    HASHMAP.get_or_init(|| {
+        let mut m = HashMap::new();
+        m.insert(0, "foo");
+        m.insert(1, "bar");
+        m.insert(2, "baz");
+        m
+    })
+}
+
+fn main() {
+    // First access to `HASHMAP` initializes it
+    println!("The entry for `0` is \"{}\".", hashmap().get(&0).unwrap());
+
+    // Any further access to `HASHMAP` just returns the computed value
+    println!("The entry for `1` is \"{}\".", hashmap().get(&1).unwrap());
 }
 ```
 
