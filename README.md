@@ -43,7 +43,7 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
-    static ref HASHMAP: HashMap<u32, &str> = {
+    static ref HASHMAP: HashMap<u32, &'static str> = {
         let mut m = HashMap::new();
         m.insert(0, "foo");
         m.insert(1, "bar");
@@ -70,7 +70,7 @@ use std::collections::HashMap;
 use std::sync::OnceLock;
 
 fn hashmap() -> &'static HashMap<u32, &'static str> {
-    static HASHMAP: OnceLock<HashMap<u32, &'static str>> = OnceLock::new();
+    static HASHMAP: OnceLock<HashMap<u32, &str>> = OnceLock::new();
     HASHMAP.get_or_init(|| {
         let mut m = HashMap::new();
         m.insert(0, "foo");
