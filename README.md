@@ -69,9 +69,8 @@ It is now possible to easily replicate this crate's functionality in Rust's stan
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-static HASHMAP: OnceLock<HashMap<u32, &'static str>> = OnceLock::new();
-
 fn hashmap() -> &'static HashMap<u32, &'static str> {
+    static HASHMAP: OnceLock<HashMap<u32, &'static str>> = OnceLock::new();
     HASHMAP.get_or_init(|| {
         let mut m = HashMap::new();
         m.insert(0, "foo");
