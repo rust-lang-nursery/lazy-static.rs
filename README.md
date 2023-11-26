@@ -61,6 +61,34 @@ fn main() {
 }
 ```
 
+# Standard library
+
+It is now possible to easily replicate this crate's functionality in Rust's standard library with [`std::sync::OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html). The example above could be also be written as:
+
+```rust
+use std::collections::HashMap;
+use std::sync::OnceLock;
+
+fn hashmap() -> &'static HashMap<u32, &'static str> {
+    static HASHMAP: OnceLock<HashMap<u32, &str>> = OnceLock::new();
+    HASHMAP.get_or_init(|| {
+        let mut m = HashMap::new();
+        m.insert(0, "foo");
+        m.insert(1, "bar");
+        m.insert(2, "baz");
+        m
+    })
+}
+
+fn main() {
+    // First access to `HASHMAP` initializes it
+    println!("The entry for `0` is \"{}\".", hashmap().get(&0).unwrap());
+
+    // Any further access to `HASHMAP` just returns the computed value
+    println!("The entry for `1` is \"{}\".", hashmap().get(&1).unwrap());
+}
+```
+
 ## License
 
 Licensed under either of
