@@ -1,0 +1,60 @@
+name: Rust
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        channel:
+        - stable
+        - beta
+        - nightly
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+    - name: Install Rust Toolchain
+      run: rustup default ${{ matrix.channel }}
+
+    - name: Install cargo-hack
+      run: cargo install cargo-hack
+
+    - name: Powerset
+      run: cargo hack test --feature-powerset --lib
+
+  miri:
+    name: "Miri"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Miri
+        run: |
+          rustup toolchain install nightly --component miri
+          cargo +nightly miri setup
+      - name: Default features
+        run: cargo +nightly miri test
+
+  embedded:
+    name: Build (embedded)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Install Rust toolchain
+        run: |
+          rustup default nightly
+          rustup target add thumbv7em-none-eabi
+
+      - name: Default features
+        run: cargo build -Z avoid-dev-deps --features spin_no_std --target thumbv7em-none-eabi
