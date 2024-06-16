@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate lazy_static_compiletest as lazy_static;
+extern crate lazy_static;
 
 mod outer {
     pub mod inner {
@@ -10,5 +10,5 @@ mod outer {
 }
 
 fn main() {
-    assert_eq!(*outer::inner::FOO, ()); //~ ERROR static `FOO` is private
+    assert_eq!(*outer::inner::FOO, ());
 }

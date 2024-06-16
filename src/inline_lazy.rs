@@ -15,6 +15,7 @@ use self::std::sync::Once;
 #[allow(deprecated)]
 pub use self::std::sync::ONCE_INIT;
 
+#[allow(dead_code)] // Used in macros
 pub struct Lazy<T: Sync>(Cell<MaybeUninit<T>>, Once);
 
 impl<T: Sync> Lazy<T> {

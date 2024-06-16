@@ -12,10 +12,10 @@ documentation = "https://docs.rs/lazy_static"
 repository = "https://github.com/rust-lang-nursery/lazy-static.rs"
 keywords = ["macro", "lazy", "static"]
 categories = [ "no-std", "rust-patterns", "memory-management" ]
-exclude = ["/.travis.yml", "/appveyor.yml"]
+exclude = [".github"]
 
 [dependencies.spin]
-version = "0.9.3"
+version = "0.9.8"
 default-features = false
 features = ["once"]
 optional = true
@@ -25,10 +25,7 @@ spin_no_std = ["spin"]
 
 [dev-dependencies]
 doc-comment = "0.3.1"
-
-[badges]
-appveyor = { repository = "rust-lang-nursery/lazy-static.rs" }
-travis-ci = { repository = "rust-lang-nursery/lazy-static.rs" }
+trybuild = "1"
 
 is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/lazy-static.rs" }
 is-it-maintained-open-issues = { repository = "rust-lang-nursery/lazy-static.rs" }
