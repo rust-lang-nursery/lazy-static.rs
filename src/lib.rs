@@ -172,7 +172,7 @@ macro_rules! lazy_static {
     () => ()
 }
 
-/// Support trait for enabling a few common operation on lazy static values.
+/// Support trait for enabling a few common operations on lazy static values.
 ///
 /// This is implemented by each defined lazy static, and
 /// used by the free functions in this crate.
