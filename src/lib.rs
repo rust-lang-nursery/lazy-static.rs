@@ -31,7 +31,7 @@ use lazy_static::lazy_static;
 
 # fn main() {
 lazy_static! {
-    /// This is an example for using doc comment attributes
+    /// This is an example of using doc comment attributes
     static ref EXAMPLE: u8 = 42;
 }
 # }
