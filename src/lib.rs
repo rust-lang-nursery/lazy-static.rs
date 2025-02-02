@@ -109,8 +109,7 @@ doctest!("../README.md");
 #[doc(hidden)]
 pub mod lazy;
 
-#[doc(hidden)]
-pub use core::ops::Deref as __Deref;
+use core::ops::Deref as __Deref;
 
 #[macro_export(local_inner_macros)]
 #[doc(hidden)]
