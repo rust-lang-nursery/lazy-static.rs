@@ -1,7 +1,7 @@
 lazy-static.rs
 ==============
 
-A macro for declaring lazily evaluated statics in Rust.
+A macro for declaring lazily evaluated statistics in Rust.
 
 Using this macro, it is possible to have `static`s that require code to be
 executed at runtime in order to be initialized.
