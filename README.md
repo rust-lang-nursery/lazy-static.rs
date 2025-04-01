@@ -10,7 +10,7 @@ as well as anything that requires non-const function calls to be computed.
 
 [![Rust](https://github.com/rust-lang-nursery/lazy-static.rs/actions/workflows/rust.yml/badge.svg)](https://github.com/rust-lang-nursery/lazy-static.rs/actions/workflows/rust.yml)
 [![Latest version](https://img.shields.io/crates/v/lazy_static.svg)](https://crates.io/crates/lazy_static)
-[![Documentation](https://docs.rs/lazy_static/badge.svg)](https://docs.rs/lazy_static)
+[![Documentation]( https://img.shields.io/docsrs/lazy_static/latest)](https://docs.rs/lazy_static)
 [![License](https://img.shields.io/crates/l/lazy_static.svg)](https://github.com/rust-lang-nursery/lazy-static.rs#license)
 
 ## Minimum supported `rustc`
